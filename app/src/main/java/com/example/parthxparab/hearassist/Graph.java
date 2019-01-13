@@ -17,9 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 public class Graph extends AppCompatActivity {
     com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton apply1, discard, save1;
     GraphView graph;
-    LinearLayout layout;
+    RelativeLayout layout;
     ProgressDialog pd;
     private ArrayList<Integer> a = new ArrayList<Integer>();
     private ArrayList<Integer> b = new ArrayList<Integer>();
@@ -84,7 +86,7 @@ public class Graph extends AppCompatActivity {
             }
         });
 
-        Integer x0[] = {2, 3, 5, 6, 7, 8, };
+        Integer x0[] = {2, 4, 6, 8, 10, 12 };
         Integer y0[] = {10, 4, 6, 1, 20, 30, 60, 70};
 
         Integer y1[] = {70, 20, 5, 10, 50, 9, 90, 10};
@@ -152,6 +154,8 @@ public class Graph extends AppCompatActivity {
             series1.setTitle("foo");
             series3.setTitle("foo");
             series2.setTitle("bar");
+            graph.getLegendRenderer().setVisible(true);
+            graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         }
 
 
@@ -175,7 +179,7 @@ public class Graph extends AppCompatActivity {
 
             @Override
             public void run() {
-                LinearLayout savingLayout = (LinearLayout) findViewById(R.id.graph_layout);
+                RelativeLayout savingLayout = (RelativeLayout) findViewById(R.id.graph_layout);
                 File file = saveBitMap(Graph.this, savingLayout);
                 if (file != null) {
                     pd.cancel();

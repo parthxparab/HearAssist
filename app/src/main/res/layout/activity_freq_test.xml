@@ -46,7 +46,7 @@
         android:layout_height="75dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:layout_gravity="center_horizontal">
 
         <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
