@@ -84,7 +84,7 @@ public class Graph extends AppCompatActivity {
             }
         });
 
-        Integer x0[] = {2, 3, 5, 6, 7, 8, 10, 11};
+        Integer x0[] = {2, 3, 5, 6, 7, 8, };
         Integer y0[] = {10, 4, 6, 1, 20, 30, 60, 70};
 
         Integer y1[] = {70, 20, 5, 10, 50, 9, 90, 10};
@@ -92,10 +92,11 @@ public class Graph extends AppCompatActivity {
         graph = findViewById(R.id.graph);
 
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 6; i++) {
             a.add(x0[i]);
             //     b.add(y0[i]);
             //    c.add(y1[i]);
+        }
 
             StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
             String[] V = {"100", "90", "80", "70", "60", "50", "40", "30", "20", "10", "0"};
@@ -118,6 +119,8 @@ public class Graph extends AppCompatActivity {
             graph.getViewport().setYAxisBoundsManual(true);
             graph.getViewport().setXAxisBoundsManual(true);
 
+        for (int i = 0; i < 6; i++) {
+
             LineGraphSeries series0 = new LineGraphSeries<DataPoint>(generateData(a, b));
             graph.addSeries(series0);
             series0.setColor(Color.RED);
@@ -133,9 +136,6 @@ public class Graph extends AppCompatActivity {
             graph.addSeries(series2);
             series2.setThickness(5);
 
-
-
-
             PointsGraphSeries series3 = new PointsGraphSeries<>(generateData(a, c));
             graph.addSeries(series3);
             series3.setCustomShape(new PointsGraphSeries.CustomShape() {
@@ -147,7 +147,15 @@ public class Graph extends AppCompatActivity {
 
                 }
             });
+
+            series0.setTitle("foo");
+            series1.setTitle("foo");
+            series3.setTitle("foo");
+            series2.setTitle("bar");
         }
+
+
+
 
 
     }
