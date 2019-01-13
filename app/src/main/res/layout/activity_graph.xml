@@ -15,7 +15,7 @@
         <com.jjoe64.graphview.GraphView
             android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="430dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="10dp"
@@ -37,10 +37,10 @@
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:gravity="center|top"
         android:orientation="horizontal"
         android:paddingBottom="15dp">
@@ -50,8 +50,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="35dp"
+            android:layout_marginRight="12dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:fabIcon="@drawable/check"
+            app:fabText="APPLY"
             app:fabType="circle" />
 
         <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
@@ -59,8 +62,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="35dp"
+            android:layout_marginRight="12dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:fabIcon="@drawable/discard"
+            app:fabText="DELETE"
             app:fabType="circle" />
 
         <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
@@ -69,7 +75,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:onClick="SaveClick"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:fabIcon="@drawable/save"
+            app:fabText="SAVE"
             app:fabType="circle" />
 
     </LinearLayout>
