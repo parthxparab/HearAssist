@@ -150,12 +150,7 @@ public class Graph extends AppCompatActivity {
                 }
             });
 
-            series0.setTitle("foo");
-            series1.setTitle("foo");
-            series3.setTitle("foo");
-            series2.setTitle("bar");
-            graph.getLegendRenderer().setVisible(true);
-            graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+
         }
 
 

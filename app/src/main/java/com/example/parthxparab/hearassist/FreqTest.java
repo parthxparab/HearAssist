@@ -100,6 +100,7 @@ public class FreqTest extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +122,7 @@ public class FreqTest extends AppCompatActivity {
                         loadImageOriginal();
                     }
                 };
-                handler.postDelayed(runnable, 500);
+                handler.postDelayed(runnable, 1500);
                 Toast.makeText(FreqTest.this, "Frequency Heard", Toast.LENGTH_SHORT).show();
                 state = 0;
                 }
@@ -195,6 +196,7 @@ public class FreqTest extends AppCompatActivity {
                     Intent in1 = new Intent(FreqTest.this, Graph.class);
                     in1.putExtra("Array", finalDbAnswer);
                     startActivity(in1);
+                    finish();
                 }
 
             }

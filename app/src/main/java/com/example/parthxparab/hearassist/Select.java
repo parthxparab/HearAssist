@@ -31,6 +31,7 @@ public class Select extends AppCompatActivity {
             public void onClick(View view) {
                 Intent waveIntent = new Intent(Select.this, FreqTest.class);
                 startActivity(waveIntent);
+                finish();
             }
         });
 
