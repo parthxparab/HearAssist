@@ -122,7 +122,7 @@ public class FreqTest extends AppCompatActivity {
                     }
                 };
                 handler.postDelayed(runnable, 500);
-                Toast.makeText(FreqTest.this, "Clicked!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FreqTest.this, "Frequency Heard", Toast.LENGTH_SHORT).show();
                 state = 0;
                 }
                 else if (state == 1) {
