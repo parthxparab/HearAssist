@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Hear Assist</string>
+    <string name="hello">HEARING\nASSISTANCE</string>
+    <string name="begin">Let\'s Begin!</string>
+    <string name="info">Info On Hearing Deficiency</string>
+    <string name="test">Press <b>I HEAR IT</b> When You Hear BEEP\n\nPress <b>AUDIOGRAM</b> After Test Completion</string>
+    <string name="gif">GIF</string>
+
+</resources>
