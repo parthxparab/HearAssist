@@ -72,7 +72,7 @@ public class FreqTest extends AppCompatActivity {
      *
      * @return
      */
-    public int randomTime() {
+    /*public int randomTime() {
         int time;
         double num = Math.random();
         if (num < 0.3) {
@@ -83,7 +83,7 @@ public class FreqTest extends AppCompatActivity {
             time = 3000;
         }
         return time;
-    }
+    }*/
 
     public int checksub(int yes_no[]) {
         int m = 0;
@@ -125,6 +125,10 @@ public class FreqTest extends AppCompatActivity {
                 .setTextTypeface(Typeface.create(
                         Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
 
+        if(state ==1)
+            DynamicToast.make(FreqTest.this, "All Frequencies Played",AppCompatResources.getDrawable(
+                    FreqTest.this, R.drawable.check), TXT, BG,5000).show();
+
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(state == 0)
@@ -136,9 +140,10 @@ public class FreqTest extends AppCompatActivity {
                         loadImageOriginal();
                     }
                 };
-                handler.postDelayed(runnable, 1500);
+                handler.postDelayed(runnable, 2000);
                     DynamicToast.make(FreqTest.this, "FREQUENCY HEARD",AppCompatResources.getDrawable(
-                            FreqTest.this, R.drawable.toast_hear), TXT, BG).show();                state = 0;
+                            FreqTest.this, R.drawable.toast_hear), TXT, BG).show();
+                    state = 0;
                 }
                 else if (state == 1) {
                     Snackbar.make(v, "Test Completed Successfully", Snackbar.LENGTH_SHORT)
@@ -335,12 +340,15 @@ public class FreqTest extends AppCompatActivity {
                             indexofthis++;
                             break;
                         }
+
+
+
                         AudioTrack audioTrack = null;
                         if (x >= 0 && x < 10) {
                             audioTrack = playSound(genTone(decibelsArray[x], frequency));
                         }
                         try {
-                            Thread.sleep(randomTime());
+                            Thread.sleep(2500);
                         } catch (InterruptedException ignored) {
                         }
                         audioTrack.release();

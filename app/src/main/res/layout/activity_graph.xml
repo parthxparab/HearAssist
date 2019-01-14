@@ -5,87 +5,124 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/graph_layout">
+
     <RelativeLayout
-        android:id="@+id/graph_layout1"
+        android:id="@+id/graph_layout"
         android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
 
         <com.jjoe64.graphview.GraphView
             android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="430dp"
+            android:layout_height="400dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:gravity="center" />
+            android:gravity="center"
+            />
+
 
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="22dp"
+            android:layout_height="15dp"
             android:layout_gravity="center"
-            android:gravity="center_horizontal"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/legend" />
 
 
     </RelativeLayout>
 
-    </RelativeLayout>
-
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:gravity="center|top"
-        android:orientation="horizontal"
-        android:paddingBottom="15dp">
+        android:gravity="center|top">
 
-        <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
-            android:id="@+id/apply1"
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center|top"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp">
+
+            <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
+                android:id="@+id/apply1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="35dp"
+                app:fabIcon="@drawable/check"
+                app:fabType="circle" />
+
+            <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
+                android:id="@+id/discard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="35dp"
+                app:fabIcon="@drawable/discard"
+                app:fabType="circle" />
+
+            <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="SaveClick"
+                app:fabIcon="@drawable/save"
+                app:fabType="circle" />
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="12dp"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:fabIcon="@drawable/check"
-            app:fabText="APPLY"
-            app:fabType="circle" />
+            android:layout_gravity="center_horizontal"
+            android:gravity="center|top"
+            android:orientation="horizontal"
+            android:layout_marginTop="80dp"
+            >
 
-        <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
-            android:id="@+id/discard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="12dp"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:fabIcon="@drawable/discard"
-            app:fabText="DELETE"
-            app:fabType="circle" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="46dp"
+                android:fontFamily="@font/roboto"
+                android:text="APPLY"
+                android:textColor="#101010"
+                android:textStyle="bold" />
 
-        <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
-            android:id="@+id/save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="SaveClick"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:fabIcon="@drawable/save"
-            app:fabText="SAVE"
-            app:fabType="circle" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="DELETE"
+                android:layout_marginRight="49dp"
+                android:textColor="#101010"
+                android:textStyle="bold"
+                />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#101010"
+                android:textStyle="bold"
+                android:text="SAVE"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
