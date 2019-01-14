@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
@@ -16,6 +17,7 @@ import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 public class Select extends AppCompatActivity {
 
     FloatingActionButton begin,browse,stop;
+    TextView infoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class Select extends AppCompatActivity {
         setContentView(R.layout.activity_select);
 
         begin= findViewById(R.id.fab1);
+        infoView=findViewById(R.id.textinfo);
         browse=findViewById(R.id.fab2);
         stop=findViewById(R.id.fab3);
 
@@ -49,7 +52,13 @@ public class Select extends AppCompatActivity {
                         .setAction("Action", null).show();            }
         });
 
-
+        infoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent waveIntent = new Intent(Select.this, Info.class);
+                startActivity(waveIntent);
+            }
+        });
 
 
 
