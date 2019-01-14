@@ -2,13 +2,17 @@ package com.example.parthxparab.hearassist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -100,6 +105,12 @@ public class FreqTest extends AppCompatActivity {
         }
     }
 
+    private static final @ColorInt
+    int BG =
+            Color.parseColor("#101010");
+    private static final @ColorInt
+    int TXT =
+            Color.parseColor("#ffffff");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +119,11 @@ public class FreqTest extends AppCompatActivity {
         btn = (FloatingActionButton) findViewById(R.id.y);
         btn1 = (FloatingActionButton) findViewById(R.id.g);
         handler = new Handler();
-
         ImageView1 = (ImageView) findViewById(R.id.gif_wave);
+
+        DynamicToast.Config.getInstance()
+                .setTextTypeface(Typeface.create(
+                        Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
 
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -123,8 +137,8 @@ public class FreqTest extends AppCompatActivity {
                     }
                 };
                 handler.postDelayed(runnable, 1500);
-                Toast.makeText(FreqTest.this, "Frequency Heard", Toast.LENGTH_SHORT).show();
-                state = 0;
+                    DynamicToast.make(FreqTest.this, "FREQUENCY HEARD",AppCompatResources.getDrawable(
+                            FreqTest.this, R.drawable.toast_hear), TXT, BG).show();                state = 0;
                 }
                 else if (state == 1) {
                     Snackbar.make(v, "Test Completed Successfully", Snackbar.LENGTH_SHORT)
