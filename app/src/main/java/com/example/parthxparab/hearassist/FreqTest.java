@@ -133,14 +133,14 @@ public class FreqTest extends AppCompatActivity {
             public void onClick(View v) {
                 if(state == 0)
                 {
-                ImageView1.setImageResource(R.drawable.wave1);
-                runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        loadImageOriginal();
-                    }
-                };
-                handler.postDelayed(runnable, 2000);
+                    ImageView1.setImageResource(R.drawable.wave1);
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            loadImageOriginal();
+                        }
+                    };
+                    handler.postDelayed(runnable, 2000);
                     DynamicToast.make(FreqTest.this, "FREQUENCY HEARD",AppCompatResources.getDrawable(
                             FreqTest.this, R.drawable.toast_hear), TXT, BG).show();
                     state = 0;
@@ -152,7 +152,7 @@ public class FreqTest extends AppCompatActivity {
         });
         loadImageOriginal();
 
-            informationTextView = findViewById(R.id.idInformation);
+        informationTextView = findViewById(R.id.idInformation);
 
         AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
         assert am != null;
@@ -201,7 +201,7 @@ public class FreqTest extends AppCompatActivity {
             }
         });
 
-            testRunningThread.start();
+        testRunningThread.start();
         screenThread.start();
         timingThread.start();
         btn1.setOnClickListener(new View.OnClickListener() {
