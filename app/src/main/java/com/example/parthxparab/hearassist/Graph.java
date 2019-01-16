@@ -103,7 +103,7 @@ public class Graph extends AppCompatActivity {
             StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
             String[] V = {"100", "90", "80", "70", "60", "50", "40", "30", "20", "10", "0"};
             //Reverse 0=100, 10=90, 20=80, 30=70 and so on
-            String[] H = {"125", "250", "500", "1000", "2000", "4000", "8000"};
+            String[] H = {"125", "250", "500", "1k", "2k", "4k", "8k  "};
             // 0=125, 2=250, 4=500, 6=1000, 8=2000, 10=4000, 12=8000
             staticLabelsFormatter.setVerticalLabels(V);
             staticLabelsFormatter.setHorizontalLabels(H);
@@ -120,6 +120,10 @@ public class Graph extends AppCompatActivity {
 
             graph.getViewport().setYAxisBoundsManual(true);
             graph.getViewport().setXAxisBoundsManual(true);
+
+        int imageResource = getResources().getIdentifier("@drawable/graph_bg", null, getPackageName());
+        Drawable graph_background = getResources().getDrawable(imageResource);
+        graph.setBackground(graph_background);
 
         for (int i = 0; i < 6; i++) {
 
