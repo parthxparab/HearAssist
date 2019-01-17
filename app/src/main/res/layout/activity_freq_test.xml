@@ -2,10 +2,12 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical">
+
 
 
     <LinearLayout
@@ -56,13 +58,30 @@
             android:textSize="17sp" />
 
     </LinearLayout>
+
     <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/heartext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="#47525E"
+            android:typeface="normal" />
+    </RelativeLayout>
+
+        <RelativeLayout
 
         android:id="@+id/page"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="90dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:gravity="center|top"
         android:orientation="horizontal">
 
@@ -106,7 +125,41 @@
 
 
 
+
     </RelativeLayout>
 
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
+
+        <ImageView
+            android:id="@+id/left1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:src="@drawable/notplaying"
+            android:gravity="left" />
+
+
+
+        <View android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/right1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:src="@drawable/notplaying"
+            android:gravity="right" />
+
+    </LinearLayout>
 
 </LinearLayout>

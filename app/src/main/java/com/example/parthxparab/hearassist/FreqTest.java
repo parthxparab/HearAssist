@@ -45,6 +45,7 @@ public class FreqTest extends AppCompatActivity {
     final Integer dbArray[] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90};
     final byte generatedSound[] = new byte[2 * numSamples]; // array of
     int index = 0;
+    int k = 0;
     int frequency, t;
     int finalDbAnswer[] = {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40};
     int tempDbArray[] = new int[100000];
@@ -60,9 +61,11 @@ public class FreqTest extends AppCompatActivity {
     private int state = 0;
     private boolean heard = false;
     private boolean loop = true;
-    private ImageView ImageView1, ImageView2;
+    private ImageView ImageView1, ImageView2,Right,Left;
     private Context context = FreqTest.this;
     private FloatingActionButton btn, btn1;
+    TextView tv;
+
 
     public int checksub(int yes_no[]) {
         int m = 0;
@@ -93,6 +96,9 @@ public class FreqTest extends AppCompatActivity {
         handler = new Handler();
         ImageView1 = (ImageView) findViewById(R.id.gif_wave);
         ImageView2 = (ImageView) findViewById(R.id.no_wave);
+        Right = (ImageView) findViewById(R.id.right1);
+        Left = (ImageView) findViewById(R.id.left1);
+        tv = (TextView) findViewById(R.id.heartext);
 
         DynamicToast.Config.getInstance()
                 .setTextTypeface(Typeface.create(
@@ -222,6 +228,30 @@ public class FreqTest extends AppCompatActivity {
             }
         });
     }
+
+    private void EarImage()
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Right.setImageResource(R.drawable.notplaying);
+                tv.setText("");
+
+                if(k ==0)
+        {
+            Right.setImageResource(R.drawable.playing);
+            tv.setText("RIGHT EAR PLAYING");
+        }
+        else
+        {
+            Right.setImageResource(R.drawable.notplaying);
+            Left.setImageResource(R.drawable.playing);
+            tv.setText("LEFT EAR PLAYING");
+
+        }
+            }
+        });
+    }
     @Override
     public boolean dispatchTouchEvent(MotionEvent e) {
         heard = true;
@@ -291,8 +321,9 @@ public class FreqTest extends AppCompatActivity {
 
         public void run() {
 
-            for (int k = 0; k < 2; k++) {
+            for (k = 0; k < 2; k++) {
 
+                EarImage();
                 ear = k;
                 for (int i = 0; i < testingFrequencies.length; i++) { //testingFrequencies.length
 
