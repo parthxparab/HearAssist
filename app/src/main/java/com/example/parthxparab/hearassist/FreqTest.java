@@ -18,7 +18,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -59,31 +58,10 @@ public class FreqTest extends AppCompatActivity {
     Runnable runnable;
     private boolean heard = false;
     private boolean loop = true;
-    private ImageView ImageView1;
+    private ImageView ImageView1, ImageView2;
     private Context context = FreqTest.this;
     private FloatingActionButton btn,btn1;
 
-    public static void stopThread() {
-        running = false;
-    }
-
-    /**
-     * Randomly picks time gap between test tones in ms
-     *
-     * @return
-     */
-    /*public int randomTime() {
-        int time;
-        double num = Math.random();
-        if (num < 0.3) {
-            time = 2000;
-        } else if (num < 0.67 && num >= 0.3) {
-            time = 2500;
-        } else {
-            time = 3000;
-        }
-        return time;
-    }*/
 
     public int checksub(int yes_no[]) {
         int m = 0;
@@ -120,36 +98,12 @@ public class FreqTest extends AppCompatActivity {
         btn1 = (FloatingActionButton) findViewById(R.id.g);
         handler = new Handler();
         ImageView1 = (ImageView) findViewById(R.id.gif_wave);
+        ImageView2 = (ImageView) findViewById(R.id.no_wave);
 
         DynamicToast.Config.getInstance()
                 .setTextTypeface(Typeface.create(
                         Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
 
-        if(state ==1)
-            DynamicToast.make(FreqTest.this, "All Frequencies Played",AppCompatResources.getDrawable(
-                    FreqTest.this, R.drawable.check), TXT, BG,5000).show();
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(state == 0)
-                {
-                    ImageView1.setImageResource(R.drawable.wave1);
-                    runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            loadImageOriginal();
-                        }
-                    };
-                    handler.postDelayed(runnable, 2000);
-                    DynamicToast.make(FreqTest.this, "FREQUENCY HEARD",AppCompatResources.getDrawable(
-                            FreqTest.this, R.drawable.toast_hear), TXT, BG).show();
-                    state = 0;
-                }
-                else if (state == 1) {
-                    Snackbar.make(v, "Test Completed Successfully", Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();                 }
-            }
-        });
         loadImageOriginal();
 
         informationTextView = findViewById(R.id.idInformation);
@@ -160,79 +114,106 @@ public class FreqTest extends AppCompatActivity {
 
         Thread timingThread = new Thread(new Runnable() {
 
+
+
             public void run() {
-                while (loop) {
-                    if (!running) {
-                        return;
-                    }
-                    if (heard) {
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException x) {
+
+                    while (loop) {
+                        if (!running) {
+                            return;
+                        }
+                        if (heard) {
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException x) {
+
+                            }
                         }
                     }
+
                 }
 
             }
-
-        }
 
         );
 
         Thread screenThread = new Thread(new Runnable() {
             public void run() {
-                while (loop) {
-                    if (!running) {
-                        return;
-                    }
-                    if (heard) {
-                        while (heard) {
 
+
+                    while (loop) {
+                        if (!running) {
+                            return;
+                        }
+                        if (heard) {
+                            while (heard) {
+
+                            }
                         }
                     }
-                }
-            }
-        });
+
+
+
+            }});
         Thread testRunningThread = new Thread(new Runnable() {
+
+
+
             public void run() {
-                final testThread testThread = new testThread();
-                testThread.run();
 
+
+                    final testThread testThread = new testThread();
+                    testThread.run();
+
+
+
+            }});
+
+    testRunningThread.start();
+    screenThread.start();
+    timingThread.start();
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if (state ==1){
+                    btn.setVisibility(View.GONE);
+                    btn1.setVisibility(View.VISIBLE);
+                    ImageView1.setVisibility(View.GONE);
+                    ImageView2.setVisibility(View.VISIBLE);
+
+                }
+                Log.d(TAG,"State: "+state);
+                ImageView1.setImageResource(R.drawable.wave1);
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        loadImageOriginal();
+                    }
+                };
+                handler.postDelayed(runnable, 2000);
+                DynamicToast.make(FreqTest.this, "FREQUENCY HEARD", AppCompatResources.getDrawable(
+                        FreqTest.this, R.drawable.toast_hear), TXT, BG).show();
+                //state = 0;
             }
         });
 
-        testRunningThread.start();
-        screenThread.start();
-        timingThread.start();
+
+
         btn1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(state == 0) {
-                    Snackbar.make(v, "Test Not Complete", Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();
-                }
-
-                else if(state == 1) {
-                    Intent in1 = new Intent(FreqTest.this, Graph.class);
-                    in1.putExtra("Array", finalDbAnswer);
-                    startActivity(in1);
-                    finish();
-                }
-
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"State: "+state);
+                Intent in1 = new Intent(FreqTest.this, Graph.class);
+                in1.putExtra("Array", finalDbAnswer);
+                startActivity(in1);
+                finish();
             }
         });
 
-
-
-   /*     Intent in = new Intent(FreqTest.this, Graph.class);
-        //Bundle b = new Bundle();
-        in.putExtra("right", rightEar);
-        in.putExtra("left", leftEar);
-        Log.d(TAG,"Thread stopped");
-        startActivity(in);
-        Log.d(TAG,"New activity launched!");*/
     }
-
-
 
 
     @Override
@@ -242,11 +223,6 @@ public class FreqTest extends AppCompatActivity {
         return super.dispatchTouchEvent(e);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        stopThread();
-    }
 
     public byte[] genTone(double volume, int frequencyOfTone) {
 
@@ -306,8 +282,10 @@ public class FreqTest extends AppCompatActivity {
     }
 
     public class testThread extends Thread {
+
         public void run() {
             for (int k = 0; k < 2; k++) {
+
                 ear = k;
                 for (int i = 0; i < testingFrequencies.length; i++) {
 
@@ -383,6 +361,7 @@ public class FreqTest extends AppCompatActivity {
                 }
                 Log.d(TAG, "FINAL DB: " + Arrays.toString(finalDbAnswer));
 
+
             }
 
 
@@ -396,8 +375,8 @@ public class FreqTest extends AppCompatActivity {
 
             //loop = false;
             state=1;
-
         }
+
 
     }
 }

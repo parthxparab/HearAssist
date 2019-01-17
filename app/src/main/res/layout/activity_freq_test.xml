@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
@@ -14,6 +15,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/gif_wave"
             android:layout_width="match_parent"
@@ -24,6 +28,20 @@
             android:layout_marginRight="45dp"
             android:gravity="center"
             android:src="@drawable/wave"/>
+
+            <ImageView
+                android:id="@+id/no_wave"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="45dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:src="@drawable/wave1"/>
+
+       </RelativeLayout>
 
         <TextView
             android:id="@+id/idInformation"
@@ -45,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="95dp"
+        android:layout_marginTop="80dp"
         android:gravity="center|top"
         android:orientation="horizontal">
 
@@ -65,7 +83,8 @@
             app:fabSizes="normal"
             app:fabText="AUDIOGRAM"
             app:fabType="circle"
-            app:fontFamily="@font/roboto" />
+            app:fontFamily="@font/roboto"
+            android:visibility="gone"/>
 
         <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
             android:id="@+id/y"
@@ -82,7 +101,8 @@
             app:fabSizes="normal"
             app:fabText=" I HEAR IT "
             app:fabType="circle"
-            app:fontFamily="@font/roboto" />
+            app:fontFamily="@font/roboto"
+            android:visibility="visible"/>
 
 
 
