@@ -7,10 +7,10 @@ import android.graphics.Typeface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
@@ -29,8 +29,9 @@ import java.util.Arrays;
 
 public class FreqTest extends AppCompatActivity {
 
-    private int state = 0;
     private static final String TAG = "FreqTest";
+    private static final @ColorInt int BG = Color.parseColor("#101010");
+    private static final @ColorInt int TXT = Color.parseColor("#ffffff");
     public static boolean running = true;
     final int duration = 20; // length of tone in seconds
     final int sampleRate = 44100; // sample rate at 44,100 times per second
@@ -56,12 +57,12 @@ public class FreqTest extends AppCompatActivity {
     ArrayList<Integer> rightEar = new ArrayList<>();
     Handler handler;
     Runnable runnable;
+    private int state = 0;
     private boolean heard = false;
     private boolean loop = true;
     private ImageView ImageView1, ImageView2;
     private Context context = FreqTest.this;
-    private FloatingActionButton btn,btn1;
-
+    private FloatingActionButton btn, btn1;
 
     public int checksub(int yes_no[]) {
         int m = 0;
@@ -82,13 +83,6 @@ public class FreqTest extends AppCompatActivity {
                 return 100;
         }
     }
-
-    private static final @ColorInt
-    int BG =
-            Color.parseColor("#101010");
-    private static final @ColorInt
-    int TXT =
-            Color.parseColor("#ffffff");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,26 +108,24 @@ public class FreqTest extends AppCompatActivity {
 
         Thread timingThread = new Thread(new Runnable() {
 
-
-
             public void run() {
 
-                    while (loop) {
-                        if (!running) {
-                            return;
-                        }
-                        if (heard) {
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException x) {
+                while (loop) {
+                    if (!running) {
+                        return;
+                    }
+                    if (heard) {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException x) {
 
-                            }
                         }
                     }
-
                 }
 
             }
+
+        }
 
         );
 
@@ -141,51 +133,57 @@ public class FreqTest extends AppCompatActivity {
             public void run() {
 
 
-                    while (loop) {
-                        if (!running) {
-                            return;
-                        }
-                        if (heard) {
-                            while (heard) {
+                while (loop) {
+                    if (!running) {
+                        return;
+                    }
+                    if (heard) {
+                        while (heard) {
 
-                            }
                         }
                     }
+                }
 
 
-
-            }});
+            }
+        });
         Thread testRunningThread = new Thread(new Runnable() {
-
 
 
             public void run() {
 
+                final testThread testThread = new testThread();
+                testThread.run();
+                if (state == 1) {
+                    testThread.interrupt();
+                    Log.d(TAG,"thread interrupt2");
+                }
 
-                    final testThread testThread = new testThread();
-                    testThread.run();
+
+            }
+        });
+
+            testRunningThread.start();
+            screenThread.start();
+            timingThread.start();
 
 
 
-            }});
 
-    testRunningThread.start();
-    screenThread.start();
-    timingThread.start();
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                if (state ==1){
+                if (state == 1) {
                     btn.setVisibility(View.GONE);
                     btn1.setVisibility(View.VISIBLE);
                     ImageView1.setVisibility(View.GONE);
                     ImageView2.setVisibility(View.VISIBLE);
 
                 }
-                Log.d(TAG,"State: "+state);
+                Log.d(TAG, "State: " + state);
                 ImageView1.setImageResource(R.drawable.wave1);
                 runnable = new Runnable() {
                     @Override
@@ -196,16 +194,14 @@ public class FreqTest extends AppCompatActivity {
                 handler.postDelayed(runnable, 2000);
                 DynamicToast.make(FreqTest.this, "FREQUENCY HEARD", AppCompatResources.getDrawable(
                         FreqTest.this, R.drawable.toast_hear), TXT, BG).show();
-                //state = 0;
             }
         });
-
 
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG,"State: "+state);
+                Log.d(TAG, "State: " + state);
                 Intent in1 = new Intent(FreqTest.this, Graph.class);
                 in1.putExtra("Array", finalDbAnswer);
                 startActivity(in1);
@@ -215,10 +211,19 @@ public class FreqTest extends AppCompatActivity {
 
     }
 
-
+    private void AudioButton(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                btn.setVisibility(View.GONE);
+                btn1.setVisibility(View.VISIBLE);
+                ImageView1.setVisibility(View.GONE);
+                ImageView2.setVisibility(View.VISIBLE);
+            }
+        });
+    }
     @Override
     public boolean dispatchTouchEvent(MotionEvent e) {
-        //Log.i("Touch Alert", "Screen was hit!" + a++ + heard);
         heard = true;
         return super.dispatchTouchEvent(e);
     }
@@ -283,11 +288,13 @@ public class FreqTest extends AppCompatActivity {
 
     public class testThread extends Thread {
 
+
         public void run() {
+
             for (int k = 0; k < 2; k++) {
 
                 ear = k;
-                for (int i = 0; i < testingFrequencies.length; i++) {
+                for (int i = 0; i < testingFrequencies.length; i++) { //testingFrequencies.length
 
                     Log.d(TAG, "frequency: " + frequency);
 
@@ -318,7 +325,6 @@ public class FreqTest extends AppCompatActivity {
                             indexofthis++;
                             break;
                         }
-
 
 
                         AudioTrack audioTrack = null;
@@ -373,8 +379,10 @@ public class FreqTest extends AppCompatActivity {
                 }
             }
 
-            //loop = false;
-            state=1;
+            state = 1;
+            testThread.interrupted();
+            Log.d(TAG,"thread interrupt1");
+            AudioButton();
         }
 
 

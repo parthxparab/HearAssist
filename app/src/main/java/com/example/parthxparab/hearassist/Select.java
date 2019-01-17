@@ -2,14 +2,13 @@ package com.example.parthxparab.hearassist;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 
 

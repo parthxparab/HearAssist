@@ -1,7 +1,7 @@
 package com.example.parthxparab.hearassist;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
