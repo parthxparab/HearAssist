@@ -7,7 +7,7 @@ import android.graphics.Typeface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -30,8 +30,10 @@ import java.util.Arrays;
 public class FreqTest extends AppCompatActivity {
 
     private static final String TAG = "FreqTest";
-    private static final @ColorInt int BG = Color.parseColor("#101010");
-    private static final @ColorInt int TXT = Color.parseColor("#ffffff");
+    private static final @ColorInt
+    int BG = Color.parseColor("#101010");
+    private static final @ColorInt
+    int TXT = Color.parseColor("#ffffff");
     public static boolean running = true;
     final int duration = 20; // length of tone in seconds
     final int sampleRate = 44100; // sample rate at 44,100 times per second
@@ -58,14 +60,14 @@ public class FreqTest extends AppCompatActivity {
     ArrayList<Integer> rightEar = new ArrayList<>();
     Handler handler;
     Runnable runnable;
+    TextView tv;
     private int state = 0;
     private boolean heard = false;
     private boolean loop = true;
-    private ImageView ImageView1, ImageView2,Right,Left;
+    private ImageView ImageView1, ImageView2, Right, Left;
     private Context context = FreqTest.this;
     private FloatingActionButton btn, btn1;
-    TextView tv;
-
+    Integer flag = 0;
 
     public int checksub(int yes_no[]) {
         int m = 0;
@@ -112,48 +114,10 @@ public class FreqTest extends AppCompatActivity {
         assert am != null;
         am.setStreamVolume(AudioManager.STREAM_MUSIC, 9, 0);
 
-        Thread timingThread = new Thread(new Runnable() {
+        AsyncTaskRunner runner = new AsyncTaskRunner();
+        runner.execute();
 
-            public void run() {
-
-                while (loop) {
-                    if (!running) {
-                        return;
-                    }
-                    if (heard) {
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException x) {
-
-                        }
-                    }
-                }
-
-            }
-
-        }
-
-        );
-
-        Thread screenThread = new Thread(new Runnable() {
-            public void run() {
-
-
-                while (loop) {
-                    if (!running) {
-                        return;
-                    }
-                    if (heard) {
-                        while (heard) {
-
-                        }
-                    }
-                }
-
-
-            }
-        });
-        Thread testRunningThread = new Thread(new Runnable() {
+        /*Thread testRunningThread = new Thread(new Runnable() {
 
 
             public void run() {
@@ -162,18 +126,12 @@ public class FreqTest extends AppCompatActivity {
                 testThread.run();
                 if (state == 1) {
                     testThread.interrupt();
-                    Log.d(TAG,"thread interrupt2");
+                    Log.d(TAG, "thread interrupt2");
                 }
 
 
             }
-        });
-
-
-            testRunningThread.start();
-            screenThread.start();
-            timingThread.start();
-
+        });*/
 
 
 
@@ -218,7 +176,7 @@ public class FreqTest extends AppCompatActivity {
 
     }
 
-    private void AudioButton(){
+    private void AudioButton() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -230,29 +188,28 @@ public class FreqTest extends AppCompatActivity {
         });
     }
 
-    private void EarImage()
-    {
+    private void EarImage(final int m) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Right.setImageResource(R.drawable.notplaying);
+                Right.setImageResource(R.drawable.ear1_h);
+                Left.setImageResource(R.drawable.ear1);
+
                 tv.setText("");
 
-                if(k ==0)
-        {
-            Right.setImageResource(R.drawable.playing);
-            tv.setText("RIGHT EAR PLAYING");
-        }
-        else
-        {
-            Right.setImageResource(R.drawable.notplaying);
-            Left.setImageResource(R.drawable.playing);
-            tv.setText("LEFT EAR PLAYING");
+                if (m == 0) {
+                    Right.setImageResource(R.drawable.ear_h);
+                    tv.setText("RIGHT EAR PLAYING");
+                } else {
+                    Right.setImageResource(R.drawable.ear1_h);
+                    Left.setImageResource(R.drawable.ear);
+                    tv.setText("LEFT EAR PLAYING");
 
-        }
+                }
             }
         });
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent e) {
         heard = true;
@@ -317,18 +274,24 @@ public class FreqTest extends AppCompatActivity {
         return audioTrack;
     }
 
-    public class testThread extends Thread {
+    class AsyncTaskRunner extends AsyncTask<Void, Void, Integer> {
 
+        @Override
+        protected Integer doInBackground(Void... voids) {
 
-        public void run() {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-            for (k = 0; k < 2; k++) {
-
-                EarImage();
+            for (int k = 0; k < 2; k++) {
+                EarImage(k);
                 ear = k;
-                for (int i = 0; i < 1; i++) { //testingFrequencies.length
+                //Log.d("MainActivity: ", "ear: " + ear);
+                for (int i = 0; i < testingFrequencies.length; i++) {//testingFrequency.length()
 
-                    Log.d(TAG, "frequency: " + frequency);
+                    Log.d("MainActivity: ", "frequency: " + frequency);
 
                     x = 4;
                     for (int j = 0; j < yes_no.length; j++) {
@@ -341,38 +304,40 @@ public class FreqTest extends AppCompatActivity {
                         khatam = checksub(yes_no);
                         if (khatam != 100) {
                             finalDbAnswer[indexofthis] = (x * 10);
-                            Log.d(TAG, "Frequency:" + frequency + "\ntempDbArray: " + Arrays.toString(tempDbArray));
+                            Log.d("CHECK::", "Frequency:" + frequency + "\ntempDbArray: " + Arrays.toString(tempDbArray));
                             indexofthis++;
                             break;
 
                         }
                         heard = false;
-                        if (!running) {
-                            return;
-                        }
+
                         if (x > 9) {
                             finalDbAnswer[indexofthis] = 90;
-                            Log.d(TAG, "frequency: " + frequency);
-                            Log.d(TAG, "frequency_dbvalue: " + (x * 10));
+                            Log.d("MainActivity: ", "frequency: " + frequency);
+                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
                             indexofthis++;
                             break;
                         }
-
-
                         AudioTrack audioTrack = null;
                         if (x >= 0 && x < 10) {
                             audioTrack = playSound(genTone(decibelsArray[x], frequency));
                         }
+                   /*         try {
+                                Thread.sleep(randomTime());
+                            } catch (InterruptedException ignored) {
+                            }*/
+
                         try {
                             Thread.sleep(2500);
-                        } catch (InterruptedException ignored) {
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
                         audioTrack.release();
                         if (heard) {
                             yes_no[index] = 1;
                             tempDbArray[index] = x;
-                            Log.d(TAG, "frequency: " + frequency);
-                            Log.d(TAG, "frequency_dbvalue: " + (x * 10));
+                            Log.d("MainActivity: ", "frequency: " + frequency);
+                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
                             index++;
                             x = x - 1;
                             if (x < 0) {
@@ -384,8 +349,8 @@ public class FreqTest extends AppCompatActivity {
                         } else {
                             yes_no[index] = 0;
                             tempDbArray[index] = x;
-                            Log.d(TAG, "frequency: " + frequency);
-                            Log.d(TAG, "frequency_dbvalue: " + (x * 10));
+                            Log.d("MainActivity: ", "frequency: " + frequency);
+                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
                             index++;
                             x = x + 1;
                             if (x > 9) {
@@ -397,12 +362,9 @@ public class FreqTest extends AppCompatActivity {
                     }
 
                 }
-                Log.d(TAG, "FINAL DB: " + Arrays.toString(finalDbAnswer));
-
-
+                Log.d("MainActivity: ", "FINAL DB: " + Arrays.toString(finalDbAnswer));
             }
-
-
+            flag = 1;
             for (int v = 0; v < 12; v++) {
                 if (v < 6) {
                     rightEar.add(finalDbAnswer[v]);
@@ -411,12 +373,19 @@ public class FreqTest extends AppCompatActivity {
                 }
             }
 
-            state = 1;
-            testThread.interrupted();
-            Log.d(TAG,"thread interrupt1");
-            AudioButton();
+            return flag;
         }
 
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            if(flag ==1){
 
+                btn.setVisibility(View.GONE);
+                btn1.setVisibility(View.VISIBLE);
+                ImageView1.setVisibility(View.GONE);
+                ImageView2.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }

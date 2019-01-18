@@ -46,6 +46,8 @@ public class Graph extends AppCompatActivity {
     String filename="",datename="";
     DbHelper dbHelper;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +116,7 @@ public class Graph extends AppCompatActivity {
                 Snackbar.make(view, "Audiogram Applied Successfully", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
 
-                Intent waveIntent = new Intent(Graph.this, Second.class);
+                Intent waveIntent = new Intent(Graph.this, Browse.class);
                 startActivity(waveIntent);
             }
         });
