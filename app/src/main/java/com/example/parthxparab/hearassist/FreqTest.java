@@ -169,6 +169,7 @@ public class FreqTest extends AppCompatActivity {
             }
         });
 
+
             testRunningThread.start();
             screenThread.start();
             timingThread.start();
@@ -325,7 +326,7 @@ public class FreqTest extends AppCompatActivity {
 
                 EarImage();
                 ear = k;
-                for (int i = 0; i < testingFrequencies.length; i++) { //testingFrequencies.length
+                for (int i = 0; i < 1; i++) { //testingFrequencies.length
 
                     Log.d(TAG, "frequency: " + frequency);
 

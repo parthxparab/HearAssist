@@ -2,6 +2,7 @@ package com.example.parthxparab.hearassist;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -41,11 +43,15 @@ public class Graph extends AppCompatActivity {
     private ArrayList<Integer> b = new ArrayList<Integer>();
     private ArrayList<Integer> c = new ArrayList<Integer>();
     int pxp;
+    String filename="",datename="";
+    DbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+
+        dbHelper = new DbHelper(this);
 
         apply1 = findViewById(R.id.apply1);
         discard = findViewById(R.id.discard);
@@ -67,12 +73,49 @@ public class Graph extends AppCompatActivity {
             }
         }
 
+        save1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                pd.setMessage("saving your image");
+                pd.show();
+                Snackbar.make(view, "Image Saved to Gallery", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                new Handler().postDelayed(new Runnable() {
+
+                    /*
+                     * Showing splash screen with a timer. This will be useful when you
+                     * want to show case your app logo / company
+                     */
+
+                    @Override
+                    public void run() {
+                        RelativeLayout savingLayout = (RelativeLayout) findViewById(R.id.graph_layout);
+                        File file = saveBitMap(Graph.this, savingLayout);
+                        if (file != null) {
+                            pd.cancel();
+                            Log.i("TAG", "Drawing saved to the gallery!");
+
+                        } else {
+                            pd.cancel();
+                            Log.i("TAG", "Oops! Image could not be saved.");
+                        }
+                    }
+                }, 1000);
+
+
+            }});
+
 
         apply1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Audiogram Applied Successfully", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
+
+                Intent waveIntent = new Intent(Graph.this, Second.class);
+                startActivity(waveIntent);
             }
         });
 
@@ -155,41 +198,10 @@ public class Graph extends AppCompatActivity {
 
         }
 
-
-
-
-
     }
 
-    public void SaveClick(View view) {
-        pd.setMessage("saving your image");
-        pd.show();
-        Snackbar.make(view, "Image Saved to Gallery", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
-
-            @Override
-            public void run() {
-                RelativeLayout savingLayout = (RelativeLayout) findViewById(R.id.graph_layout);
-                File file = saveBitMap(Graph.this, savingLayout);
-                if (file != null) {
-                    pd.cancel();
-                    Log.i("TAG", "Drawing saved to the gallery!");
-                } else {
-                    pd.cancel();
-                    Log.i("TAG", "Oops! Image could not be saved.");
-                }
-            }
-        }, 1000);
 
 
-    }
 
     private File saveBitMap(Context context, View drawView) {
         File pictureFileDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "HearAssist");
@@ -199,7 +211,9 @@ public class Graph extends AppCompatActivity {
                 Log.i("TAG", "Can't create directory to save the image");
             return null;
         }
-        String filename = pictureFileDir.getPath() + File.separator + System.currentTimeMillis() + ".jpg";
+        filename = pictureFileDir.getPath() + File.separator + System.currentTimeMillis() + ".jpg";
+        datename=""+System.currentTimeMillis();
+        AddData(filename);
         File pictureFile = new File(filename);
         Bitmap bitmap = getBitmapFromView(drawView);
         try {
@@ -214,6 +228,8 @@ public class Graph extends AppCompatActivity {
         }
         scanGallery(context, pictureFile.getAbsolutePath());
         return pictureFile;
+
+
     }
 
     private Bitmap getBitmapFromView(View view) {
@@ -245,6 +261,16 @@ public class Graph extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             Log.i("TAG", "There was an issue scanning gallery.");
+        }
+    }
+
+    public void AddData(String newEntry) {
+        boolean insertData = dbHelper.addData(newEntry);
+
+        if (insertData) {
+            Log.d("SQLDATA","Data added to db") ;
+        } else {
+            Log.d("SQLDATA","Data not added to db") ;
         }
     }
 
