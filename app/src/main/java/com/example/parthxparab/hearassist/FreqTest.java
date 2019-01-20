@@ -63,6 +63,7 @@ public class FreqTest extends AppCompatActivity {
     TextView tv;
     private int state = 0;
     private boolean heard = false;
+    private boolean back = false;
     private boolean loop = true;
     private ImageView ImageView1, ImageView2, Right, Left;
     private Context context = FreqTest.this;
@@ -88,6 +89,7 @@ public class FreqTest extends AppCompatActivity {
                 return 100;
         }
     }
+    AsyncTaskRunner runner = new AsyncTaskRunner();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +107,9 @@ public class FreqTest extends AppCompatActivity {
         DynamicToast.Config.getInstance()
                 .setTextTypeface(Typeface.create(
                         Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
-
-        loadImageOriginal();
+        if(back == false) {
+            loadImageOriginal();
+        }
 
         informationTextView = findViewById(R.id.idInformation);
 
@@ -114,8 +117,9 @@ public class FreqTest extends AppCompatActivity {
         assert am != null;
         am.setStreamVolume(AudioManager.STREAM_MUSIC, 9, 0);
 
-        AsyncTaskRunner runner = new AsyncTaskRunner();
+//        AsyncTaskRunner runner = new AsyncTaskRunner();
         runner.execute();
+
 
         /*Thread testRunningThread = new Thread(new Runnable() {
 
@@ -156,7 +160,7 @@ public class FreqTest extends AppCompatActivity {
                         loadImageOriginal();
                     }
                 };
-                handler.postDelayed(runnable, 2000);
+                handler.postDelayed(runnable, 2100);
                 DynamicToast.make(FreqTest.this, "FREQUENCY HEARD", AppCompatResources.getDrawable(
                         FreqTest.this, R.drawable.toast_hear), TXT, BG).show();
             }
@@ -170,12 +174,15 @@ public class FreqTest extends AppCompatActivity {
                 Intent in1 = new Intent(FreqTest.this, Graph.class);
                 in1.putExtra("Array", finalDbAnswer);
                 startActivity(in1);
-                finish();
+//                finish();
             }
         });
 
     }
 
+
+
+/*
     private void AudioButton() {
         runOnUiThread(new Runnable() {
             @Override
@@ -187,6 +194,7 @@ public class FreqTest extends AppCompatActivity {
             }
         });
     }
+*/
 
     private void EarImage(final int m) {
         runOnUiThread(new Runnable() {
@@ -216,7 +224,6 @@ public class FreqTest extends AppCompatActivity {
         return super.dispatchTouchEvent(e);
     }
 
-
     public byte[] genTone(double volume, int frequencyOfTone) {
 
         //float angle = 0;
@@ -241,6 +248,8 @@ public class FreqTest extends AppCompatActivity {
     }
 
     private void loadImageOriginal() {
+
+
         int resourceid = R.drawable.wave;
         RequestOptions options = new RequestOptions();
         options.dontTransform();
@@ -284,86 +293,87 @@ public class FreqTest extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+                for (int k = 0; k < 2; k++) {
 
-            for (int k = 0; k < 2; k++) {
-                EarImage(k);
-                ear = k;
-                //Log.d("MainActivity: ", "ear: " + ear);
-                for (int i = 0; i < testingFrequencies.length; i++) {//testingFrequency.length()
+                    EarImage(k);
+                    ear = k;
+                    //Log.d("MainActivity: ", "ear: " + ear);
+                    for (int i = 0; i < 1; i++) {//testingFrequencies.length
 
-                    Log.d("MainActivity: ", "frequency: " + frequency);
+                        Log.d("MainActivity: ", "frequency: " + frequency);
 
-                    x = 4;
-                    for (int j = 0; j < yes_no.length; j++) {
-                        yes_no[j] = 2;
-                    }
-                    frequency = testingFrequencies[i];
-                    boolean temp = true;
-                    while (temp) {
-                        //  khatam = 0;
-                        khatam = checksub(yes_no);
-                        if (khatam != 100) {
-                            finalDbAnswer[indexofthis] = (x * 10);
-                            Log.d("CHECK::", "Frequency:" + frequency + "\ntempDbArray: " + Arrays.toString(tempDbArray));
-                            indexofthis++;
-                            break;
-
+                        x = 4;
+                        for (int j = 0; j < yes_no.length; j++) {
+                            yes_no[j] = 2;
                         }
-                        heard = false;
+                        frequency = testingFrequencies[i];
+                        boolean temp = true;
+                        while (temp) {
+                            //  khatam = 0;
+                            khatam = checksub(yes_no);
+                            if (khatam != 100) {
+                                finalDbAnswer[indexofthis] = (x * 10);
+                                Log.d("CHECK::", "Frequency:" + frequency + "\ntempDbArray: " + Arrays.toString(tempDbArray));
+                                indexofthis++;
+                                break;
 
-                        if (x > 9) {
-                            finalDbAnswer[indexofthis] = 90;
-                            Log.d("MainActivity: ", "frequency: " + frequency);
-                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
-                            indexofthis++;
-                            break;
-                        }
-                        AudioTrack audioTrack = null;
-                        if (x >= 0 && x < 10) {
-                            audioTrack = playSound(genTone(decibelsArray[x], frequency));
-                        }
+                            }
+                            heard = false;
+
+                            if (x > 9) {
+                                finalDbAnswer[indexofthis] = 90;
+                                Log.d("MainActivity: ", "frequency: " + frequency);
+                                Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
+                                indexofthis++;
+                                break;
+                            }
+                            AudioTrack audioTrack = null;
+                            if (x >= 0 && x < 10) {
+                                audioTrack = playSound(genTone(decibelsArray[x], frequency));
+                            }
                    /*         try {
                                 Thread.sleep(randomTime());
                             } catch (InterruptedException ignored) {
                             }*/
 
-                        try {
-                            Thread.sleep(2500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        audioTrack.release();
-                        if (heard) {
-                            yes_no[index] = 1;
-                            tempDbArray[index] = x;
-                            Log.d("MainActivity: ", "frequency: " + frequency);
-                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
-                            index++;
-                            x = x - 1;
-                            if (x < 0) {
-                                finalDbAnswer[indexofthis] = 0;
-                                indexofthis++;
-                                break;
+                            try {
+                                Thread.sleep(2500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
+                            audioTrack.release();
+                            if (heard) {
+                                yes_no[index] = 1;
+                                tempDbArray[index] = x;
+                                Log.d("MainActivity: ", "frequency: " + frequency);
+                                Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
+                                index++;
+                                x = x - 1;
+                                if (x < 0) {
+                                    finalDbAnswer[indexofthis] = 0;
+                                    indexofthis++;
+                                    break;
+                                }
 
-                        } else {
-                            yes_no[index] = 0;
-                            tempDbArray[index] = x;
-                            Log.d("MainActivity: ", "frequency: " + frequency);
-                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
-                            index++;
-                            x = x + 1;
-                            if (x > 9) {
-                                finalDbAnswer[indexofthis] = 90;
-                                indexofthis++;
-                                break;
+                            } else {
+                                yes_no[index] = 0;
+                                tempDbArray[index] = x;
+                                Log.d("MainActivity: ", "frequency: " + frequency);
+                                Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
+                                index++;
+                                x = x + 1;
+                                if (x > 9) {
+                                    finalDbAnswer[indexofthis] = 90;
+                                    indexofthis++;
+                                    break;
+                                }
                             }
                         }
+
                     }
-
+                    Log.d("MainActivity: ", "FINAL DB: " + Arrays.toString(finalDbAnswer));
                 }
-                Log.d("MainActivity: ", "FINAL DB: " + Arrays.toString(finalDbAnswer));
-            }
+
             flag = 1;
             for (int v = 0; v < 12; v++) {
                 if (v < 6) {
@@ -387,5 +397,18 @@ public class FreqTest extends AppCompatActivity {
                 ImageView2.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+//        super.onBackPressed();
+        back = true;
+        Intent waveIntent = new Intent(FreqTest.this, Select.class);
+        waveIntent.setFlags(waveIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(waveIntent);
+        Glide.with(context).clear(ImageView1);
+
+        finish();
     }
 }

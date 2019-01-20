@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
             android:textColor="#1F2D3D"
-
+            android:layout_marginBottom="5dp"
             android:text="@string/infoView1"
             android:textAlignment="viewStart" />
 

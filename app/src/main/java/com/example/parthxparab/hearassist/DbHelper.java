@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 /**
@@ -17,18 +18,20 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = "DbHelper";
 
     private static final String TABLE_NAME = "image_db";
-    private static final String COL0 = "ID";
+    public static final String DATABASE_NAME = "audiogram.db";
+    private static final int COL0 = 0;
     private static final String COL1 = "name";
+    public static final String COL2 = "path";
 
 
     public DbHelper(Context context) {
-        super(context, TABLE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL1 +" TEXT)";
+        String createTable =  "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                " NAME TEXT, PATH TEXT)";
         db.execSQL(createTable);
     }
 
@@ -38,12 +41,13 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String item) {
+    public boolean addData(String name, String path) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL1, item);
+        contentValues.put(COL1, name);
+        contentValues.put(COL2,path);
 
-        Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
+        Log.d(TAG, "addData: Adding " + name +"AND"+ path + " to " + TABLE_NAME);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -88,17 +92,17 @@ public class DbHelper extends SQLiteOpenHelper {
 
     /**
      * Delete from database
-     * @param id
-     * @param name
      */
-    public void deleteName(int id, String name){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE "
-                + COL0 + " = '" + id + "'" +
-                " AND " + COL1 + " = '" + name + "'";
-        Log.d(TAG, "deleteName: query: " + query);
-        Log.d(TAG, "deleteName: Deleting " + name + " from database.");
-        db.execSQL(query);
+    public void deleteData(int id){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String sql = "DELETE FROM FOOD WHERE id = ?";
+        SQLiteStatement statement = db.compileStatement(sql);
+        statement.clearBindings();
+        statement.bindDouble(1, (double)id);
+
+        statement.execute();
+        db.close();
     }
 
 }

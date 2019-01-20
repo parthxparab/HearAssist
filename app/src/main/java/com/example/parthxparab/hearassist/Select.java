@@ -40,7 +40,8 @@ public class Select extends AppCompatActivity {
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Select.this, "Clicked!", Toast.LENGTH_SHORT).show();
+                Intent waveIntent = new Intent(Select.this, Browse.class);
+                startActivity(waveIntent);
             }
         });
 

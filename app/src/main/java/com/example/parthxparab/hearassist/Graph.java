@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
@@ -31,7 +33,11 @@ import com.jjoe64.graphview.series.PointsGraphSeries;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class Graph extends AppCompatActivity {
@@ -205,6 +211,7 @@ public class Graph extends AppCompatActivity {
 
 
 
+
     private File saveBitMap(Context context, View drawView) {
         File pictureFileDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "HearAssist");
         if (!pictureFileDir.exists()) {
@@ -213,9 +220,11 @@ public class Graph extends AppCompatActivity {
                 Log.i("TAG", "Can't create directory to save the image");
             return null;
         }
-        filename = pictureFileDir.getPath() + File.separator + System.currentTimeMillis() + ".jpg";
-        datename=""+System.currentTimeMillis();
-        AddData(filename);
+        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmm", Locale.UK);
+        Date now = new Date();
+        filename = pictureFileDir.getPath() + File.separator + formatter.format(now) + ".jpg";
+        datename=""+formatter.format(now);
+        AddData(datename,filename);
         File pictureFile = new File(filename);
         Bitmap bitmap = getBitmapFromView(drawView);
         try {
@@ -266,8 +275,8 @@ public class Graph extends AppCompatActivity {
         }
     }
 
-    public void AddData(String newEntry) {
-        boolean insertData = dbHelper.addData(newEntry);
+    public void AddData(String name, String path) {
+        boolean insertData = dbHelper.addData(name,path);
 
         if (insertData) {
             Log.d("SQLDATA","Data added to db") ;
@@ -287,6 +296,16 @@ public class Graph extends AppCompatActivity {
 
         }
         return values;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+//        super.onBackPressed();
+        Intent waveIntent = new Intent(Graph.this, Select.class);
+        waveIntent.setFlags(waveIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(waveIntent);
+        finish();
     }
 
 

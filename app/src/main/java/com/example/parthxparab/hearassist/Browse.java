@@ -1,14 +1,17 @@
 package com.example.parthxparab.hearassist;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,40 +25,96 @@ public class Browse extends AppCompatActivity {
     DbHelper dbHelper;
 
     private ListView mListView;
+    ArrayList<Items> list;
+    CustomAdapter adapter = null;
+    TextView tv;
+    int id =0;
+    String name,path;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
-        mListView = (ListView) findViewById(R.id.listView);
-        dbHelper = new DbHelper(this);
-        populateListView();
-    }
 
-    private void populateListView() {
+        mListView = (ListView) findViewById(R.id.listView);
+        tv = (TextView) findViewById(R.id.placeholder);
+        list = new ArrayList<>();
+        adapter = new CustomAdapter(this, R.layout.list_itempxp, list);
+        dbHelper = new DbHelper(this);
+
+        FloatingActionButton fabadd = findViewById(R.id.fabadd);
+        fabadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent waveIntent = new Intent(Browse.this, FreqTest.class);
+                startActivity(waveIntent);
+            }
+        });
+
+        //      populateListView() starts here
+
         Log.d(TAG, "populateListView: Displaying data in the ListView.");
 
         //get the data and append to a list
         Cursor data = dbHelper.getData();
-        ArrayList<String> listData = new ArrayList<>();
-        while(data.moveToNext()){
+
+        while(data.moveToNext())
+        {
+
             //get the value from the database in column 1
             //then add it to the ArrayList
-            listData.add(data.getString(1));
+            id = data.getInt(0);
+            name = data.getString(1);
+            path = data.getString(2);
+
+            list.add(new Items(name, path, id));
+            if(id == 1)
+            {
+                tv.setText("");
+            }
+
         }
+        adapter.notifyDataSetChanged();
         //create the list adapter and set the adapter
-        ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
         mListView.setAdapter(adapter);
 
 
+        //        populateListView(); code ends here
+
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Items it = (Items) adapterView.getItemAtPosition(i);
+
+                Log.d(TAG, "name: " + it.getName());
+                Log.d(TAG, "id: " + it.geId());
+                Log.d(TAG, "path: " + it.getImage());
+
+                String name1 = it.getName();
+                int id1 = it.geId();
+                String path1 = it.getImage();
+
+
+                Intent bIntent = new Intent(Browse.this, BrowseImage.class);
+                bIntent.putExtra("name", name1);
+                bIntent.putExtra("id", id1);
+                bIntent.putExtra("path", path1);
+                startActivity(bIntent);}
+
+
+        });
     }
 
-    /**
-     * customizable toast
-     * @param message
-     */
-    private void toastMessage(String message){
-        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+
+    @Override
+    public void onBackPressed() {
+        Intent waveIntent = new Intent(Browse.this, Select.class);
+        waveIntent.setFlags(waveIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(waveIntent);
+        finish();
     }
 }
 

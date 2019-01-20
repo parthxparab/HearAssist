@@ -28,6 +28,7 @@ dependencies {
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation 'com.github.karanchuri:PermissionManager:0.1.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'com.robertlevonyan.view:CustomFloatingActionButton:2.1.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
