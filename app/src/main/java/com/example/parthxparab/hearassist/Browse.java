@@ -104,7 +104,7 @@ public class Browse extends AppCompatActivity {
                 String path1 = it.getImage();
 
 
-                Intent bIntent = new Intent(Browse.this, BrowseImage.class);
+                Intent bIntent = new Intent(Browse.this, Splash.class);
                 bIntent.putExtra("name", name1);
                 bIntent.putExtra("id", id1);
                 bIntent.putExtra("path", path1);
@@ -121,9 +121,9 @@ public class Browse extends AppCompatActivity {
         int revealX = (int) (view.getX() + view.getWidth() / 2);
         int revealY = (int) (view.getY() + view.getHeight() / 2);
 
-        Intent intent = new Intent(this, FreqTest.class);
-        intent.putExtra(FreqTest.EXTRA_CIRCULAR_REVEAL_X, revealX);
-        intent.putExtra(FreqTest.EXTRA_CIRCULAR_REVEAL_Y, revealY);
+        Intent intent = new Intent(this, Splash.class);
+        intent.putExtra(Splash.EXTRA_CIRCULAR_REVEAL_X, revealX);
+        intent.putExtra(Splash.EXTRA_CIRCULAR_REVEAL_Y, revealY);
 
         ActivityCompat.startActivity(this, intent, options.toBundle());
     }

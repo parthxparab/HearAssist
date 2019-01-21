@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".BrowseImage"></activity>
+        <activity android:name=".Splash"></activity>
+        <activity android:name=".BrowseImage" />
         <activity
             android:name=".Browse"
             android:label="Browse Test"

@@ -35,13 +35,13 @@ import java.util.Arrays;
 public class FreqTest extends AppCompatActivity {
 
 
-    public static final String EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X";
+  /*  public static final String EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X";
     public static final String EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y";
 
     View rootLayout;
 
     private int revealX;
-    private int revealY;
+    private int revealY;*/
 
     private static final String TAG = "FreqTest";
     private static final @ColorInt
@@ -110,7 +110,7 @@ public class FreqTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_freq_test);
 
-        final Intent intent = getIntent();
+       /* final Intent intent = getIntent();
         rootLayout = findViewById(R.id.root_layout);
 
         if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
@@ -134,7 +134,7 @@ public class FreqTest extends AppCompatActivity {
             }
         } else {
             rootLayout.setVisibility(View.VISIBLE);
-        }
+        }*/
 
 
 
@@ -207,6 +207,7 @@ public class FreqTest extends AppCompatActivity {
     }
 
 
+/*
     protected void revealActivity(int x, int y) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             float finalRadius = (float) (Math.max(rootLayout.getWidth(), rootLayout.getHeight()) * 1.1);
@@ -223,6 +224,7 @@ public class FreqTest extends AppCompatActivity {
             finish();
         }
     }
+*/
 
 
     private void EarImage(final int m) {
