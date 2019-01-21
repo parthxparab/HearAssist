@@ -1,5 +1,6 @@
 package com.example.parthxparab.hearassist;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -16,6 +18,9 @@ import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +33,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FreqTest extends AppCompatActivity {
+
+
+    public static final String EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X";
+    public static final String EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y";
+
+    View rootLayout;
+
+    private int revealX;
+    private int revealY;
 
     private static final String TAG = "FreqTest";
     private static final @ColorInt
@@ -95,6 +109,35 @@ public class FreqTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_freq_test);
+
+        final Intent intent = getIntent();
+        rootLayout = findViewById(R.id.root_layout);
+
+        if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) &&
+                intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)) {
+            rootLayout.setVisibility(View.INVISIBLE);
+
+            revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0);
+            revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0);
+
+
+            ViewTreeObserver viewTreeObserver = rootLayout.getViewTreeObserver();
+            if (viewTreeObserver.isAlive()) {
+                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        revealActivity(revealX, revealY);
+                        rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+            }
+        } else {
+            rootLayout.setVisibility(View.VISIBLE);
+        }
+
+
+
         btn = (FloatingActionButton) findViewById(R.id.y);
         btn1 = (FloatingActionButton) findViewById(R.id.g);
         handler = new Handler();
@@ -117,25 +160,9 @@ public class FreqTest extends AppCompatActivity {
         assert am != null;
         am.setStreamVolume(AudioManager.STREAM_MUSIC, 9, 0);
 
-//        AsyncTaskRunner runner = new AsyncTaskRunner();
         runner.execute();
 
 
-        /*Thread testRunningThread = new Thread(new Runnable() {
-
-
-            public void run() {
-
-                final testThread testThread = new testThread();
-                testThread.run();
-                if (state == 1) {
-                    testThread.interrupt();
-                    Log.d(TAG, "thread interrupt2");
-                }
-
-
-            }
-        });*/
 
 
 
@@ -174,27 +201,29 @@ public class FreqTest extends AppCompatActivity {
                 Intent in1 = new Intent(FreqTest.this, Graph.class);
                 in1.putExtra("Array", finalDbAnswer);
                 startActivity(in1);
-//                finish();
             }
         });
 
     }
 
 
+    protected void revealActivity(int x, int y) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            float finalRadius = (float) (Math.max(rootLayout.getWidth(), rootLayout.getHeight()) * 1.1);
 
-/*
-    private void AudioButton() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                btn.setVisibility(View.GONE);
-                btn1.setVisibility(View.VISIBLE);
-                ImageView1.setVisibility(View.GONE);
-                ImageView2.setVisibility(View.VISIBLE);
-            }
-        });
+            // create the animator for this view (the start radius is zero)
+            Animator circularReveal = ViewAnimationUtils.createCircularReveal(rootLayout, x, y, 0, finalRadius);
+            circularReveal.setDuration(400);
+            circularReveal.setInterpolator(new AccelerateInterpolator());
+
+            // make the view visible and start the animation
+            rootLayout.setVisibility(View.VISIBLE);
+            circularReveal.start();
+        } else {
+            finish();
+        }
     }
-*/
+
 
     private void EarImage(final int m) {
         runOnUiThread(new Runnable() {
@@ -298,7 +327,7 @@ public class FreqTest extends AppCompatActivity {
                     EarImage(k);
                     ear = k;
                     //Log.d("MainActivity: ", "ear: " + ear);
-                    for (int i = 0; i < 1; i++) {//testingFrequencies.length
+                    for (int i = 0; i < testingFrequencies.length; i++) {//testingFrequencies.length
 
                         Log.d("MainActivity: ", "frequency: " + frequency);
 

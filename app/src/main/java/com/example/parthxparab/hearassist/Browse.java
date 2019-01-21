@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,8 +48,12 @@ public class Browse extends AppCompatActivity {
         fabadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent waveIntent = new Intent(Browse.this, FreqTest.class);
-                startActivity(waveIntent);
+//                Intent waveIntent = new Intent(Browse.this, FreqTest.class);
+//                startActivity(waveIntent);
+                presentActivity(view);
+
+
+
             }
         });
 
@@ -68,7 +74,7 @@ public class Browse extends AppCompatActivity {
             path = data.getString(2);
 
             list.add(new Items(name, path, id));
-            if(id == 1)
+            if(id != 0)
             {
                 tv.setText("");
             }
@@ -108,6 +114,19 @@ public class Browse extends AppCompatActivity {
         });
     }
 
+
+    public void presentActivity(View view) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, view, "transition");
+        int revealX = (int) (view.getX() + view.getWidth() / 2);
+        int revealY = (int) (view.getY() + view.getHeight() / 2);
+
+        Intent intent = new Intent(this, FreqTest.class);
+        intent.putExtra(FreqTest.EXTRA_CIRCULAR_REVEAL_X, revealX);
+        intent.putExtra(FreqTest.EXTRA_CIRCULAR_REVEAL_Y, revealY);
+
+        ActivityCompat.startActivity(this, intent, options.toBundle());
+    }
 
     @Override
     public void onBackPressed() {

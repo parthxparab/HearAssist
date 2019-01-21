@@ -19,7 +19,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "image_db";
     public static final String DATABASE_NAME = "audiogram.db";
-    private static final int COL0 = 0;
+    private static  int COL0 = 0;
     private static final String COL1 = "name";
     public static final String COL2 = "path";
 
@@ -93,13 +93,15 @@ public class DbHelper extends SQLiteOpenHelper {
     /**
      * Delete from database
      */
-    public void deleteData(int id){
+    public void deleteData(String name){
+
         SQLiteDatabase db = getWritableDatabase();
 
-        String sql = "DELETE FROM FOOD WHERE id = ?";
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE "
+                + COL1 + " = " + name ;
         SQLiteStatement statement = db.compileStatement(sql);
-        statement.clearBindings();
-        statement.bindDouble(1, (double)id);
+//        statement.clearBindings();
+//        statement.bindDouble(1, (double)id);
 
         statement.execute();
         db.close();

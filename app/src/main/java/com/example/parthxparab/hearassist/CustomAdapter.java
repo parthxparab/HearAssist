@@ -10,13 +10,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class CustomAdapter extends BaseAdapter {
 
     private Context context;
     private  int layout;
     private ArrayList<Items> itemList;
+    String date1 ="",date2="";
 
     public CustomAdapter(Context context, int layout, ArrayList<Items> itemList) {
         this.context = context;
@@ -65,8 +69,11 @@ public class CustomAdapter extends BaseAdapter {
 
         Items Items = itemList.get(position);
 
-        holder.txtName.setText("Filename: "+Items.getName()+".jpg");
-        holder.txtId.setText("TEST "+Items.geId());
+            date1=Items.getName();
+            date2=date1.substring(0,2)+'-'+date1.substring(2,4)+'-'+date1.substring(4,8)+' '+' '+' '+date1.substring(8,10)+':'+date1.substring(10);
+
+        holder.txtName.setText(""+date2);
+        holder.txtId.setText("Test ID : "+Items.getName());
 
         String ItemsImage = Items.getImage();
         Bitmap bitmap = BitmapFactory.decodeFile(ItemsImage);

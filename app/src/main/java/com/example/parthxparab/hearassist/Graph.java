@@ -7,15 +7,18 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -29,6 +32,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,11 +52,100 @@ public class Graph extends AppCompatActivity {
     private ArrayList<Integer> a = new ArrayList<Integer>();
     private ArrayList<Integer> b = new ArrayList<Integer>();
     private ArrayList<Integer> c = new ArrayList<Integer>();
+    private static final @ColorInt
+    int BG = Color.parseColor("#101010");
+    private static final @ColorInt
+    int TXT = Color.parseColor("#ffffff");
     int pxp;
-    String filename="",datename="";
+    String filename="",datename="",filename1="";
     DbHelper dbHelper;
 
+    private File saveBitMap(Context context, View drawView) {
+        File pictureFileDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "HearAssist");
+        if (!pictureFileDir.exists()) {
+            boolean isDirectoryCreated = pictureFileDir.mkdirs();
+            if (!isDirectoryCreated)
+                Log.i("TAG", "Can't create directory to save the image");
+            return null;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmm", Locale.UK);
+        Date now = new Date();
+        filename = pictureFileDir.getPath() + File.separator + formatter.format(now) + ".jpg";
+        filename1 = filename;
+        datename=""+formatter.format(now);
+        AddData(datename,filename);
+        File pictureFile = new File(filename);
+        Bitmap bitmap = getBitmapFromView(drawView);
+        try {
+            pictureFile.createNewFile();
+            FileOutputStream oStream = new FileOutputStream(pictureFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, oStream);
+            oStream.flush();
+            oStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.i("TAG", "There was an issue saving the image.");
+        }
+        scanGallery(context, pictureFile.getAbsolutePath());
+        return pictureFile;
 
+
+    }
+
+    private Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        //Get the view's background
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null) {
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        } else {
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        }
+        // draw the view on the canvas
+        view.draw(canvas);
+        //return the bitmap
+        return returnedBitmap;
+    }
+
+    private void scanGallery(Context cntx, String path) {
+        try {
+            MediaScannerConnection.scanFile(cntx, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                public void onScanCompleted(String path, Uri uri) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("TAG", "There was an issue scanning gallery.");
+        }
+    }
+
+    public void AddData(String name, String path) {
+        boolean insertData = dbHelper.addData(name,path);
+
+        if (insertData) {
+            Log.d("SQLDATA","Data added to db") ;
+        } else {
+            Log.d("SQLDATA","Data not added to db") ;
+        }
+    }
+
+    private DataPoint[] generateData(ArrayList p, ArrayList q) {
+        int count = p.size();
+        DataPoint[] values = new DataPoint[count];
+        for (int i = 0; i < count; i++) {
+            int x = (int) p.get(i);
+            int y = (int) q.get(i);
+            DataPoint v = new DataPoint(x, y);
+            values[i] = v;
+
+        }
+        return values;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +159,10 @@ public class Graph extends AppCompatActivity {
         save1 = findViewById(R.id.save);
         layout = findViewById(R.id.graph_layout);
         pd = new ProgressDialog(Graph.this);
+
+        DynamicToast.Config.getInstance()
+                .setTextTypeface(Typeface.create(
+                        Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
 
         Bundle myBundle = getIntent().getExtras();
         int[] freqData = myBundle.getIntArray("Array");
@@ -87,8 +184,6 @@ public class Graph extends AppCompatActivity {
 
                 pd.setMessage("saving your image");
                 pd.show();
-                Snackbar.make(view, "Image Saved to Gallery", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
                 new Handler().postDelayed(new Runnable() {
 
@@ -112,6 +207,7 @@ public class Graph extends AppCompatActivity {
                     }
                 }, 1000);
 
+                DynamicToast.make(Graph.this, "FILENAME: "+filename1, TXT, BG,6000).show();
 
             }});
 
@@ -212,91 +308,7 @@ public class Graph extends AppCompatActivity {
 
 
 
-    private File saveBitMap(Context context, View drawView) {
-        File pictureFileDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "HearAssist");
-        if (!pictureFileDir.exists()) {
-            boolean isDirectoryCreated = pictureFileDir.mkdirs();
-            if (!isDirectoryCreated)
-                Log.i("TAG", "Can't create directory to save the image");
-            return null;
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmm", Locale.UK);
-        Date now = new Date();
-        filename = pictureFileDir.getPath() + File.separator + formatter.format(now) + ".jpg";
-        datename=""+formatter.format(now);
-        AddData(datename,filename);
-        File pictureFile = new File(filename);
-        Bitmap bitmap = getBitmapFromView(drawView);
-        try {
-            pictureFile.createNewFile();
-            FileOutputStream oStream = new FileOutputStream(pictureFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, oStream);
-            oStream.flush();
-            oStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.i("TAG", "There was an issue saving the image.");
-        }
-        scanGallery(context, pictureFile.getAbsolutePath());
-        return pictureFile;
 
-
-    }
-
-    private Bitmap getBitmapFromView(View view) {
-        //Define a bitmap with the same size as the view
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(returnedBitmap);
-        //Get the view's background
-        Drawable bgDrawable = view.getBackground();
-        if (bgDrawable != null) {
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        } else {
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
-        }
-        // draw the view on the canvas
-        view.draw(canvas);
-        //return the bitmap
-        return returnedBitmap;
-    }
-
-    private void scanGallery(Context cntx, String path) {
-        try {
-            MediaScannerConnection.scanFile(cntx, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
-                public void onScanCompleted(String path, Uri uri) {
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.i("TAG", "There was an issue scanning gallery.");
-        }
-    }
-
-    public void AddData(String name, String path) {
-        boolean insertData = dbHelper.addData(name,path);
-
-        if (insertData) {
-            Log.d("SQLDATA","Data added to db") ;
-        } else {
-            Log.d("SQLDATA","Data not added to db") ;
-        }
-    }
-
-    private DataPoint[] generateData(ArrayList p, ArrayList q) {
-        int count = p.size();
-        DataPoint[] values = new DataPoint[count];
-        for (int i = 0; i < count; i++) {
-            int x = (int) p.get(i);
-            int y = (int) q.get(i);
-            DataPoint v = new DataPoint(x, y);
-            values[i] = v;
-
-        }
-        return values;
-    }
 
     @Override
     public void onBackPressed() {
