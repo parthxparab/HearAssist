@@ -1,1 +1,1 @@
-include ':app', ':Revellibrary'
+include ':app'

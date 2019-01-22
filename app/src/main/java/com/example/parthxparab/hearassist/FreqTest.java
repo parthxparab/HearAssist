@@ -77,7 +77,6 @@ public class FreqTest extends AppCompatActivity {
     TextView tv;
     private int state = 0;
     private boolean heard = false;
-    private boolean back = false;
     private boolean loop = true;
     private ImageView ImageView1, ImageView2, Right, Left;
     private Context context = FreqTest.this;
@@ -110,31 +109,6 @@ public class FreqTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_freq_test);
 
-       /* final Intent intent = getIntent();
-        rootLayout = findViewById(R.id.root_layout);
-
-        if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) &&
-                intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)) {
-            rootLayout.setVisibility(View.INVISIBLE);
-
-            revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0);
-            revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0);
-
-
-            ViewTreeObserver viewTreeObserver = rootLayout.getViewTreeObserver();
-            if (viewTreeObserver.isAlive()) {
-                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        revealActivity(revealX, revealY);
-                        rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
-                });
-            }
-        } else {
-            rootLayout.setVisibility(View.VISIBLE);
-        }*/
 
 
 
@@ -150,9 +124,8 @@ public class FreqTest extends AppCompatActivity {
         DynamicToast.Config.getInstance()
                 .setTextTypeface(Typeface.create(
                         Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
-        if(back == false) {
             loadImageOriginal();
-        }
+
 
         informationTextView = findViewById(R.id.idInformation);
 
@@ -161,8 +134,6 @@ public class FreqTest extends AppCompatActivity {
         am.setStreamVolume(AudioManager.STREAM_MUSIC, 9, 0);
 
         runner.execute();
-
-
 
 
 
@@ -316,15 +287,24 @@ public class FreqTest extends AppCompatActivity {
 
     class AsyncTaskRunner extends AsyncTask<Void, Void, Integer> {
 
+
+
         @Override
         protected Integer doInBackground(Void... voids) {
 
             try {
                 Thread.sleep(1000);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            if (isCancelled())
+            {
+                System.exit(0);}
+
                 for (int k = 0; k < 2; k++) {
+
 
                     EarImage(k);
                     ear = k;
@@ -433,13 +413,21 @@ public class FreqTest extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+        runner.cancel(true);
+
 //        super.onBackPressed();
-        back = true;
         Intent waveIntent = new Intent(FreqTest.this, Select.class);
         waveIntent.setFlags(waveIntent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(waveIntent);
         Glide.with(context).clear(ImageView1);
 
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        runner.cancel(true);
+
     }
 }

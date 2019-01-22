@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -119,6 +120,14 @@ public class BrowseImage extends AppCompatActivity {
                 Intent intent = new Intent(BrowseImage.this,Browse.class);
                 startActivity(intent);
 
+            }});
+
+        apply2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Snackbar.make(view, "Button Functionality pending", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
             }});
 
     }

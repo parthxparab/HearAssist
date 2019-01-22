@@ -48,7 +48,7 @@ public class Select extends AppCompatActivity {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Services Stopped Successfully", Snackbar.LENGTH_SHORT)
+                Snackbar.make(view, "Button Functionality pending", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();            }
         });
 
