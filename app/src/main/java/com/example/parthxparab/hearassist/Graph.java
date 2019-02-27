@@ -43,6 +43,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static java.lang.Math.abs;
+
 
 public class Graph extends AppCompatActivity {
     com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton apply1, discard, save1;
@@ -140,6 +142,7 @@ public class Graph extends AppCompatActivity {
         for (int i = 0; i < count; i++) {
             int x = (int) p.get(i);
             int y = (int) q.get(i);
+            y = abs(100-y); //ADDED NEW. 03/02/2019
             DataPoint v = new DataPoint(x, y);
             values[i] = v;
 
@@ -171,7 +174,7 @@ public class Graph extends AppCompatActivity {
         {
             if (pxp < 6)
             {
-              b.add(freqData[pxp]);
+                b.add(freqData[pxp]);
             }
             else {
                 c.add(freqData[pxp]);
@@ -245,26 +248,26 @@ public class Graph extends AppCompatActivity {
             //    c.add(y1[i]);
         }
 
-            StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-            String[] V = {"100", "90", "80", "70", "60", "50", "40", "30", "20", "10", "0"};
-            //Reverse 0=100, 10=90, 20=80, 30=70 and so on
-            String[] H = {"125", "250", "500", "1k", "2k", "4k", "8k  "};
-            // 0=125, 2=250, 4=500, 6=1000, 8=2000, 10=4000, 12=8000
-            staticLabelsFormatter.setVerticalLabels(V);
-            staticLabelsFormatter.setHorizontalLabels(H);
-            graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+        String[] V = {"100", "90", "80", "70", "60", "50", "40", "30", "20", "10", "0"};
+        //Reverse 0=100, 10=90, 20=80, 30=70 and so on
+        String[] H = {"125", "250", "500", "1k", "2k", "4k", "8k  "};
+        // 0=125, 2=250, 4=500, 6=1000, 8=2000, 10=4000, 12=8000
+        staticLabelsFormatter.setVerticalLabels(V);
+        staticLabelsFormatter.setHorizontalLabels(H);
+        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
-            GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
-            gridLabel.setHorizontalAxisTitle("f[Hz]");
-            gridLabel.setVerticalAxisTitle("dB");
+        GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
+        gridLabel.setHorizontalAxisTitle("f[Hz]");
+        gridLabel.setVerticalAxisTitle("dB");
 
-            graph.getViewport().setMinX(0);
-            graph.getViewport().setMaxX(12);
-            graph.getViewport().setMinY(0);
-            graph.getViewport().setMaxY(100);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(12);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(100);
 
-            graph.getViewport().setYAxisBoundsManual(true);
-            graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setXAxisBoundsManual(true);
 
         int imageResource = getResources().getIdentifier("@drawable/graph_bg", null, getPackageName());
         Drawable graph_background = getResources().getDrawable(imageResource);

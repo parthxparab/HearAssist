@@ -124,7 +124,7 @@ public class FreqTest extends AppCompatActivity {
         DynamicToast.Config.getInstance()
                 .setTextTypeface(Typeface.create(
                         Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
-            loadImageOriginal();
+        loadImageOriginal();
 
 
         informationTextView = findViewById(R.id.idInformation);
@@ -303,87 +303,87 @@ public class FreqTest extends AppCompatActivity {
             {
                 System.exit(0);}
 
-                for (int k = 0; k < 2; k++) {
+            for (int k = 0; k < 2; k++) {
 
 
-                    EarImage(k);
-                    ear = k;
-                    //Log.d("MainActivity: ", "ear: " + ear);
-                    for (int i = 0; i < testingFrequencies.length; i++) {//testingFrequencies.length
+                EarImage(k);
+                ear = k;
+                //Log.d("MainActivity: ", "ear: " + ear);
+                for (int i = 0; i < testingFrequencies.length; i++) {//testingFrequencies.length
 
-                        Log.d("MainActivity: ", "frequency: " + frequency);
+                    Log.d("MainActivity: ", "frequency: " + frequency);
 
-                        x = 4;
-                        for (int j = 0; j < yes_no.length; j++) {
-                            yes_no[j] = 2;
+                    x = 4; //index hai array ka.
+                    for (int j = 0; j < yes_no.length; j++) {
+                        yes_no[j] = 2;
+                    }
+                    frequency = testingFrequencies[i];
+                    boolean temp = true;
+                    while (temp) {
+                        //  khatam = 0;
+                        khatam = checksub(yes_no);
+                        if (khatam != 100) {
+                            finalDbAnswer[indexofthis] = (int)Math.ceil((x * 10)*0.8);
+                            Log.d("CHECK::", "Frequency:" + frequency + "\ntempDbArray: " + Arrays.toString(tempDbArray));
+                            indexofthis++;
+                            break;
+
                         }
-                        frequency = testingFrequencies[i];
-                        boolean temp = true;
-                        while (temp) {
-                            //  khatam = 0;
-                            khatam = checksub(yes_no);
-                            if (khatam != 100) {
-                                finalDbAnswer[indexofthis] = (x * 10);
-                                Log.d("CHECK::", "Frequency:" + frequency + "\ntempDbArray: " + Arrays.toString(tempDbArray));
-                                indexofthis++;
-                                break;
+                        heard = false;
 
-                            }
-                            heard = false;
-
-                            if (x > 9) {
-                                finalDbAnswer[indexofthis] = 90;
-                                Log.d("MainActivity: ", "frequency: " + frequency);
-                                Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
-                                indexofthis++;
-                                break;
-                            }
-                            AudioTrack audioTrack = null;
-                            if (x >= 0 && x < 10) {
-                                audioTrack = playSound(genTone(decibelsArray[x], frequency));
-                            }
+                        if (x > 9) {
+                            finalDbAnswer[indexofthis] = (int)Math.ceil(90*0.8);
+                            Log.d("MainActivity: ", "frequency: " + frequency);
+                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
+                            indexofthis++;
+                            break;
+                        }
+                        AudioTrack audioTrack = null;
+                        if (x >= 0 && x < 10) {
+                            audioTrack = playSound(genTone(decibelsArray[x], frequency));
+                        }
                    /*         try {
                                 Thread.sleep(randomTime());
                             } catch (InterruptedException ignored) {
                             }*/
 
-                            try {
-                                Thread.sleep(2500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                        try {
+                            Thread.sleep(2500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        audioTrack.release();
+                        if (heard) {
+                            yes_no[index] = 1;
+                            tempDbArray[index] = x;
+                            Log.d("MainActivity: ", "frequency: " + frequency);
+                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
+                            index++;
+                            x = x - 1;
+                            if (x < 0) {
+                                finalDbAnswer[indexofthis] = 0;
+                                indexofthis++;
+                                break;
                             }
-                            audioTrack.release();
-                            if (heard) {
-                                yes_no[index] = 1;
-                                tempDbArray[index] = x;
-                                Log.d("MainActivity: ", "frequency: " + frequency);
-                                Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
-                                index++;
-                                x = x - 1;
-                                if (x < 0) {
-                                    finalDbAnswer[indexofthis] = 0;
-                                    indexofthis++;
-                                    break;
-                                }
 
-                            } else {
-                                yes_no[index] = 0;
-                                tempDbArray[index] = x;
-                                Log.d("MainActivity: ", "frequency: " + frequency);
-                                Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
-                                index++;
-                                x = x + 1;
-                                if (x > 9) {
-                                    finalDbAnswer[indexofthis] = 90;
-                                    indexofthis++;
-                                    break;
-                                }
+                        } else {
+                            yes_no[index] = 0;
+                            tempDbArray[index] = x;
+                            Log.d("MainActivity: ", "frequency: " + frequency);
+                            Log.d("MainActivity: ", "frequency_dbvalue: " + (x * 10));
+                            index++;
+                            x = x + 1;
+                            if (x > 9) {
+                                finalDbAnswer[indexofthis] = (int)Math.ceil(90*0.8);
+                                indexofthis++;
+                                break;
                             }
                         }
-
                     }
-                    Log.d("MainActivity: ", "FINAL DB: " + Arrays.toString(finalDbAnswer));
+
                 }
+                Log.d("MainActivity: ", "FINAL DB: " + Arrays.toString(finalDbAnswer));
+            }
 
             flag = 1;
             for (int v = 0; v < 12; v++) {
