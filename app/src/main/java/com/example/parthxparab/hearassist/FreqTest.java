@@ -1,6 +1,5 @@
 package com.example.parthxparab.hearassist;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,7 +8,6 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -18,9 +16,6 @@ import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewAnimationUtils;
-import android.view.ViewTreeObserver;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -82,6 +77,11 @@ public class FreqTest extends AppCompatActivity {
     private Context context = FreqTest.this;
     private FloatingActionButton btn, btn1;
     Integer flag = 0;
+    String user, age;
+
+
+
+
 
     public int checksub(int yes_no[]) {
         int m = 0;
@@ -120,6 +120,11 @@ public class FreqTest extends AppCompatActivity {
         Right = (ImageView) findViewById(R.id.right1);
         Left = (ImageView) findViewById(R.id.left1);
         tv = (TextView) findViewById(R.id.heartext);
+
+        Bundle myBundle = getIntent().getExtras();
+        user=myBundle.getString("et1");
+        age=myBundle.getString("et2");
+        Log.d("FreqTest: ","USER: "+ user + " AGE: " + age);
 
         DynamicToast.Config.getInstance()
                 .setTextTypeface(Typeface.create(
@@ -171,6 +176,8 @@ public class FreqTest extends AppCompatActivity {
                 Log.d(TAG, "State: " + state);
                 Intent in1 = new Intent(FreqTest.this, Graph.class);
                 in1.putExtra("Array", finalDbAnswer);
+                in1.putExtra("user", user);
+                in1.putExtra("age", age);
                 startActivity(in1);
             }
         });
@@ -309,7 +316,7 @@ public class FreqTest extends AppCompatActivity {
                 EarImage(k);
                 ear = k;
                 //Log.d("MainActivity: ", "ear: " + ear);
-                for (int i = 0; i < testingFrequencies.length; i++) {//testingFrequencies.length
+                for (int i = 0; i < 2; i++) {//testingFrequencies.length
 
                     Log.d("MainActivity: ", "frequency: " + frequency);
 

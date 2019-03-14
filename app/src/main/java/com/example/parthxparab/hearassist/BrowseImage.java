@@ -37,7 +37,7 @@ import java.util.Locale;
 public class BrowseImage extends AppCompatActivity {
 
     ImageView img;
-    TextView tv1,tv2;
+    TextView tv1,tv2,tv3,tv4;
     ProgressDialog pd;
     DbHelper dbHelper;
     int BG = Color.parseColor("#101010");
@@ -55,6 +55,9 @@ public class BrowseImage extends AppCompatActivity {
         img = (ImageView) findViewById(R.id.graphimg);
         tv1 = (TextView) findViewById(R.id.graphtitle);
         tv2 = (TextView) findViewById(R.id.graphref);
+        tv3 = (TextView) findViewById(R.id.usertv);
+        tv4 = (TextView) findViewById(R.id.agetv);
+
 
         dbHelper = new DbHelper(this);
 
@@ -73,11 +76,15 @@ public class BrowseImage extends AppCompatActivity {
         gid = myBundle.getInt("id");
         final String gname = myBundle.getString("name");
         String gpath = myBundle.getString("path");
+        String user = myBundle.getString("user");
+        String age = myBundle.getString("age");
 
         Bitmap bitmap = BitmapFactory.decodeFile(gpath);
         img.setImageBitmap(bitmap);
         tv1.setText(""+gname);
         tv2.setText("filename: "+gname+".jpg");
+        tv3.setText("Name:"+user);
+        tv4.setText("Age:"+age+" years");
 
         save2.setOnClickListener(new View.OnClickListener() {
             @Override

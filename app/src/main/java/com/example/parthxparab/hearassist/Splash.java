@@ -43,7 +43,7 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(Splash.this, FreqTest.class);
+                Intent i = new Intent(Splash.this, Name.class);
                 ActivityOptions options =
                         ActivityOptions.makeCustomAnimation(Splash.this, R.anim.fade_in, R.anim.fade_out);
                 startActivity(i,options.toBundle());

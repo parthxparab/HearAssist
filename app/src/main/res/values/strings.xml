@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Hear Assist</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_name1">Age (years)</string>
+
     <string name="hello">HEARING\nASSISTANCE</string>
     <string name="begin">Let\'s Begin!</string>
     <string name="info"><u>Info On Hearing Deficiency</u></string>

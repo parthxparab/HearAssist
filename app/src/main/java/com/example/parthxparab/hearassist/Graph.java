@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -34,14 +35,27 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import static java.lang.Math.abs;
 
@@ -59,7 +73,9 @@ public class Graph extends AppCompatActivity {
     private static final @ColorInt
     int TXT = Color.parseColor("#ffffff");
     int pxp;
-    String filename="",datename="",filename1="";
+    int[] freqData;
+    String user,age,user1,age1;
+    String filename="",datename=""/*,filename1=""*/;
     DbHelper dbHelper;
 
     private File saveBitMap(Context context, View drawView) {
@@ -73,9 +89,9 @@ public class Graph extends AppCompatActivity {
         SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmm", Locale.UK);
         Date now = new Date();
         filename = pictureFileDir.getPath() + File.separator + formatter.format(now) + ".jpg";
-        filename1 = filename;
+//        filename1 = filename;
         datename=""+formatter.format(now);
-        AddData(datename,filename);
+        AddData(datename,filename,user,age);
         File pictureFile = new File(filename);
         Bitmap bitmap = getBitmapFromView(drawView);
         try {
@@ -126,8 +142,8 @@ public class Graph extends AppCompatActivity {
         }
     }
 
-    public void AddData(String name, String path) {
-        boolean insertData = dbHelper.addData(name,path);
+    public void AddData(String name, String path, String user, String age) {
+        boolean insertData = dbHelper.addData(name,path,user,age);
 
         if (insertData) {
             Log.d("SQLDATA","Data added to db") ;
@@ -168,7 +184,11 @@ public class Graph extends AppCompatActivity {
                         Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
 
         Bundle myBundle = getIntent().getExtras();
-        int[] freqData = myBundle.getIntArray("Array");
+        freqData = myBundle.getIntArray("Array");
+        user1=myBundle.getString("user");
+        age1=myBundle.getString("age");
+        Log.d("Graph: ","USER: "+ user1 + " AGE: " + age1);
+
 
         for(pxp = 0; pxp<freqData.length; pxp++)
         {
@@ -210,7 +230,7 @@ public class Graph extends AppCompatActivity {
                     }
                 }, 1000);
 
-                DynamicToast.make(Graph.this, "FILENAME: "+filename1, TXT, BG,6000).show();
+                DynamicToast.make(Graph.this, "Image Saved on Device!", TXT, BG,6000).show();
 
             }});
 
@@ -218,10 +238,9 @@ public class Graph extends AppCompatActivity {
         apply1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Audiogram Applied Successfully", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
 
-                Intent waveIntent = new Intent(Graph.this, Browse.class);
+                Intent waveIntent = new Intent(Graph.this, Report.class);
+                waveIntent.putExtra("Report", freqData);
                 startActivity(waveIntent);
             }
         });
@@ -306,11 +325,6 @@ public class Graph extends AppCompatActivity {
         }
 
     }
-
-
-
-
-
 
 
     @Override
