@@ -73,7 +73,7 @@ public class Graph extends AppCompatActivity {
     private static final @ColorInt
     int TXT = Color.parseColor("#ffffff");
     int pxp;
-    int[] freqData;
+    int[] freqData,freqData1;
     String user,age,user1,age1;
     String filename="",datename=""/*,filename1=""*/;
     DbHelper dbHelper;
@@ -185,6 +185,7 @@ public class Graph extends AppCompatActivity {
 
         Bundle myBundle = getIntent().getExtras();
         freqData = myBundle.getIntArray("Array");
+        freqData1 = freqData;
         user1=myBundle.getString("user");
         age1=myBundle.getString("age");
         Log.d("Graph: ","USER: "+ user1 + " AGE: " + age1);
@@ -240,7 +241,7 @@ public class Graph extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent waveIntent = new Intent(Graph.this, Report.class);
-                waveIntent.putExtra("Report", freqData);
+                waveIntent.putExtra("Report", freqData1);
                 startActivity(waveIntent);
             }
         });
