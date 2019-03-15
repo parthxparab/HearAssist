@@ -79,6 +79,7 @@ public class BrowseImage extends AppCompatActivity {
         String user = myBundle.getString("user");
         String age = myBundle.getString("age");
 
+
         Bitmap bitmap = BitmapFactory.decodeFile(gpath);
         img.setImageBitmap(bitmap);
         tv1.setText(""+gname);

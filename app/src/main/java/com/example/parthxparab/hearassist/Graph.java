@@ -91,7 +91,8 @@ public class Graph extends AppCompatActivity {
         filename = pictureFileDir.getPath() + File.separator + formatter.format(now) + ".jpg";
 //        filename1 = filename;
         datename=""+formatter.format(now);
-        AddData(datename,filename,user,age);
+        AddData(datename,filename,user1,age1);
+        Log.d("Graph: ","USER: "+ user1 + " AGE: " + age1);
         File pictureFile = new File(filename);
         Bitmap bitmap = getBitmapFromView(drawView);
         try {
@@ -186,6 +187,8 @@ public class Graph extends AppCompatActivity {
         Bundle myBundle = getIntent().getExtras();
         freqData = myBundle.getIntArray("Array");
         freqData1 = freqData;
+        Log.d("Graph",freqData1.toString());
+
         user1=myBundle.getString("user");
         age1=myBundle.getString("age");
         Log.d("Graph: ","USER: "+ user1 + " AGE: " + age1);
@@ -232,6 +235,8 @@ public class Graph extends AppCompatActivity {
                 }, 1000);
 
                 DynamicToast.make(Graph.this, "Image Saved on Device!", TXT, BG,6000).show();
+                Log.d("Freqdata1",freqData1.toString());
+
 
             }});
 
@@ -242,6 +247,7 @@ public class Graph extends AppCompatActivity {
 
                 Intent waveIntent = new Intent(Graph.this, Report.class);
                 waveIntent.putExtra("Report", freqData1);
+                Log.d("Graph",freqData1.toString());
                 startActivity(waveIntent);
             }
         });

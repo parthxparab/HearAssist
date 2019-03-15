@@ -71,7 +71,8 @@
             android:layout_width="match_parent"
             android:layout_height="136dp"
             android:stretchColumns="5"
-            tools:layout_editor_absoluteY="0dp">
+            tools:layout_editor_absoluteY="0dp"
+            tools:ignore="MissingConstraints">
 
             <TableRow
                 android:layout_width="match_parent"
@@ -113,7 +114,7 @@
                     android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="1000"
+                    android:text="1K"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -123,7 +124,7 @@
                     android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="2000"
+                    android:text="2K"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -133,7 +134,7 @@
                     android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="4000"
+                    android:text="4K"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </TableRow>
 
@@ -390,7 +391,7 @@
                     android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="1000"
+                    android:text="1K"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -400,7 +401,7 @@
                     android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="2000"
+                    android:text="2K"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -410,7 +411,7 @@
                     android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="4000"
+                    android:text="4K"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </TableRow>
 
