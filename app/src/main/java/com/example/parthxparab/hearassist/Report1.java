@@ -4,29 +4,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class Report extends AppCompatActivity {
+public class Report1 extends AppCompatActivity {
 
 
     int [] reportData;
-    String u,a;
-    TextView name,age;
-    TextView mL1,mL2,mL3,mL4,mL5,mR1,mR2,mR3,mR4,mR5;
+    TextView mL1,mL2,mL3,mL4,mL5,mR1,mR2,mR3,mR4,mR5,namepxp,agepxp;
+    String namef = "",agef = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report);
+        setContentView(R.layout.activity_report1);
+
 
         Bundle myBundle = getIntent().getExtras();
-//         reportData= myBundle.getIntArray("Report");
-        u = myBundle.getString("username");
-        a = myBundle.getString("agename");
+        namef=myBundle.getString("userrep");
+        agef=myBundle.getString("agerep");
 
-        name = (TextView) findViewById(R.id.name);
-        age = (TextView) findViewById(R.id.age);
+        namepxp = findViewById(R.id.namex1);
+        agepxp = findViewById(R.id.agex1);
 
-        name.setText(u);
-        age.setText(a);
+        namepxp.setText("NAME: "+namef.toUpperCase());
+        agepxp.setText("AGE: "+agef.toUpperCase()+" YEARS");
 
 
   /*       mL1 = findViewById(R.id.l1);

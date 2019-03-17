@@ -43,9 +43,9 @@ public class BrowseImage extends AppCompatActivity {
     int BG = Color.parseColor("#101010");
     private static final @ColorInt
     int TXT = Color.parseColor("#ffffff");
-    String filename1="",datename1="";
+    String filename1="",datename1="",namex="",agex="";
     int  gid =0;
-    com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton apply2, discard1, save2;
+    com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton report, discard1, save2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class BrowseImage extends AppCompatActivity {
                 .setTextTypeface(Typeface.create(
                         Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
 
-        apply2 = findViewById(R.id.apply2);
+        report = findViewById(R.id.apply2);
         discard1 = findViewById(R.id.discard1);
         save2 = findViewById(R.id.save1);
         pd = new ProgressDialog(BrowseImage.this);
@@ -76,16 +76,18 @@ public class BrowseImage extends AppCompatActivity {
         gid = myBundle.getInt("id");
         final String gname = myBundle.getString("name");
         String gpath = myBundle.getString("path");
-        String user = myBundle.getString("user");
-        String age = myBundle.getString("age");
+        final String user = myBundle.getString("user");
+        namex = user;
+        final String age = myBundle.getString("age");
+        agex = age;
 
 
         Bitmap bitmap = BitmapFactory.decodeFile(gpath);
         img.setImageBitmap(bitmap);
         tv1.setText(""+gname);
         tv2.setText("filename: "+gname+".jpg");
-        tv3.setText("Name:"+user);
-        tv4.setText("Age:"+age+" years");
+        tv3.setText("NAME : "+user.toUpperCase());
+        tv4.setText("AGE : "+age.toUpperCase()+" YEARS");
 
         save2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,12 +132,14 @@ public class BrowseImage extends AppCompatActivity {
 
             }});
 
-        apply2.setOnClickListener(new View.OnClickListener() {
+        report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Snackbar.make(view, "Button Functionality pending", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+                Intent in1 = new Intent(BrowseImage.this, Report1.class);
+                in1.putExtra("userrep", namex);
+                in1.putExtra("agerep", agex);
+                startActivity(in1);
             }});
 
     }
