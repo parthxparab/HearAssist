@@ -20,7 +20,7 @@ public class CustomAdapter extends BaseAdapter {
     private Context context;
     private  int layout;
     private ArrayList<Items> itemList;
-    String date1 ="",date2="";
+    String date1 ="",date2="",namelist ="";
 
     public CustomAdapter(Context context, int layout, ArrayList<Items> itemList) {
         this.context = context;
@@ -70,9 +70,10 @@ public class CustomAdapter extends BaseAdapter {
         Items Items = itemList.get(position);
 
             date1=Items.getName();
-            date2=date1.substring(0,2)+'-'+date1.substring(2,4)+'-'+date1.substring(4,8)+' '+' '+' '+date1.substring(8,10)+':'+date1.substring(10);
+            namelist= Items.getUser();
+        date2=date1.substring(0,2)+'-'+date1.substring(2,4)+'-'+date1.substring(4,8)+' '+' '+' '+date1.substring(8,10)+':'+date1.substring(10);
 
-        holder.txtName.setText(""+date2);
+        holder.txtName.setText(""+date2+"  -  "+namelist);
         holder.txtId.setText("Test ID : "+Items.getName());
 
         String ItemsImage = Items.getImage();
