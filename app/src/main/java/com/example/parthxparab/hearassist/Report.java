@@ -30,10 +30,11 @@ public class Report extends AppCompatActivity {
 
 
     int [] reportData;
-    String ager,namer,reportpath,filename,datename;
+    String ager,namer,reportpath,filename,datename,filename1;
     com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton repsave1;
     LinearLayout replayout;
     TextView name,age;
+    DbHelper dbHelper;
     ProgressDialog pd;
     private static final @ColorInt
     int BG = Color.parseColor("#101010");
@@ -51,9 +52,9 @@ public class Report extends AppCompatActivity {
                 Log.i("TAG", "Can't create directory to save the image");
             return null;
         }
-        Date now = new Date();
         filename = ""+reportpath;
 //        filename1 = filename;
+
         File pictureFile = new File(filename);
         Bitmap bitmap = getBitmapFromView(drawView);
         try {
@@ -92,6 +93,16 @@ public class Report extends AppCompatActivity {
         return returnedBitmap;
     }
 
+    public void AddData(String name, String path, String user, String age, String report) {
+        boolean insertData = dbHelper.addData(name, path, user, age, report);
+
+        if (insertData) {
+            Log.d("SQLDATA", "Data added to db");
+        } else {
+            Log.d("SQLDATA", "Data not added to db");
+        }
+    }
+
     private void scanGallery(Context cntx, String path) {
         try {
             MediaScannerConnection.scanFile(cntx, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
@@ -117,7 +128,11 @@ public class Report extends AppCompatActivity {
         namer = myBundle.getString("userrep");
         reportpath = myBundle.getString("reportlocation");
         ager = myBundle.getString("agerep");
+        datename = myBundle.getString("datename");
+        filename1 = myBundle.getString("filename");
         pd = new ProgressDialog(Report.this);
+
+        dbHelper = new DbHelper(this);
 
 
         Log.d("Report.java", "" + Arrays.toString(reportData));
@@ -170,6 +185,7 @@ public class Report extends AppCompatActivity {
                         LinearLayout savingLayout = findViewById(R.id.replayout);
                         File file = saveBitMap(Report.this, savingLayout);
                         if (file != null) {
+                            AddData(datename, filename1, namer,ager, filename);
                             pd.cancel();
                             Log.i("TAG", "Image saved to the gallery!");
 
@@ -186,34 +202,6 @@ public class Report extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-  /*       mL1 = findViewById(R.id.l1);
-         mL2 = findViewById(R.id.l2);
-         mL3 = findViewById(R.id.l3);
-         mL4 = findViewById(R.id.l4);
-         mL5 = findViewById(R.id.l5);
-         mR1 = findViewById(R.id.r1);
-         mR2 = findViewById(R.id.r2);
-         mR3 = findViewById(R.id.r3);
-         mR4 = findViewById(R.id.r4);
-         mR5 = findViewById(R.id.r5);
-
-        mR1.setText(""+reportData[0]);
-        mR2.setText(""+reportData[1]);
-        mR3.setText(""+reportData[2]);
-        mR4.setText(""+reportData[3]);
-        mR5.setText(""+reportData[4]);
-
-        mL1.setText(""+reportData[5]);
-        mL2.setText(""+reportData[6]);
-        mL3.setText(""+reportData[7]);
-        mL4.setText(""+reportData[8]);
-        mL5.setText(""+reportData[9]);*/
 
     }
 }

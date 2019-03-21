@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -51,6 +52,7 @@ public class Graph extends AppCompatActivity {
     RelativeLayout layout;
     ProgressDialog pd;
     int pxp;
+    TextView utv,atv;
     int[] freqData, freqData1;
     String user1, age1;
     String filename = "", datename = "", report = "",reporttemp=""/*,filename1=""*/;
@@ -75,7 +77,7 @@ public class Graph extends AppCompatActivity {
         report = pictureFileDir.getPath() + File.separator + reporttemp + ".jpg";
 //        filename1 = filename;
 
-        AddData(datename, filename, user1, age1, report);
+//        AddData(datename, filename, user1, age1, report);
         Log.d("Graph: ", "USER: " + user1 + " AGE: " + age1);
         File pictureFile = new File(filename);
         Bitmap bitmap = getBitmapFromView(drawView);
@@ -158,9 +160,11 @@ public class Graph extends AppCompatActivity {
 
         dbHelper = new DbHelper(this);
 
-        apply1 = findViewById(R.id.apply1);
+//        apply1 = findViewById(R.id.apply1);
         discard = findViewById(R.id.discard);
-        save1 = findViewById(R.id.save);
+        save1 = findViewById(R.id.apply1);
+        utv = (TextView) findViewById(R.id.usertv1);
+        atv = (TextView) findViewById(R.id.agetv1);
         layout = findViewById(R.id.graph_layout);
         pd = new ProgressDialog(Graph.this);
 
@@ -176,6 +180,9 @@ public class Graph extends AppCompatActivity {
         age1 = myBundle.getString("age");
         Log.d("Graph: ", "USER: " + user1 + " AGE: " + age1);
 
+        utv.setText("NAME: "+user1.toUpperCase());
+        atv.setText("AGE: "+age1.toUpperCase()+" YEARS");
+
 
         for (pxp = 0; pxp < freqData.length; pxp++) {
             if (pxp < 6) {
@@ -189,7 +196,7 @@ public class Graph extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                pd.setMessage("saving your image");
+                pd.setMessage("Generating Report");
                 pd.show();
 
                 new Handler().postDelayed(new Runnable() {
@@ -205,6 +212,15 @@ public class Graph extends AppCompatActivity {
                         File file = saveBitMap(Graph.this, savingLayout);
                         if (file != null) {
                             pd.cancel();
+                            Intent waveIntent = new Intent(Graph.this, Report.class);
+                            waveIntent.putExtra("reparray", freqData1);
+                            waveIntent.putExtra("userrep", user1);
+                            waveIntent.putExtra("agerep", age1);
+                            waveIntent.putExtra("reportlocation", report);
+                            waveIntent.putExtra("datename", datename);
+                            waveIntent.putExtra("filename", filename);
+
+                            startActivity(waveIntent);
                             Log.i("TAG", "Image saved to the gallery!");
 
                         } else {
@@ -214,14 +230,14 @@ public class Graph extends AppCompatActivity {
                     }
                 }, 1000);
 
-                DynamicToast.make(Graph.this, "Image Saved on Device!", TXT, BG, 6000).show();
+//                DynamicToast.make(Graph.this, "Image Saved on Device!", TXT, BG, 6000).show();
 
 
             }
         });
 
 
-        apply1.setOnClickListener(new View.OnClickListener() {
+        /*apply1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -230,11 +246,14 @@ public class Graph extends AppCompatActivity {
                 waveIntent.putExtra("userrep", user1);
                 waveIntent.putExtra("agerep", age1);
                 waveIntent.putExtra("reportlocation", report);
+                waveIntent.putExtra("datename", datename);
+                waveIntent.putExtra("filename", filename);
+
 
 
                 startActivity(waveIntent);
             }
-        });
+        });*/
 
         discard.setOnClickListener(new View.OnClickListener() {
             @Override
