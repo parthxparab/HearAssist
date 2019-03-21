@@ -31,7 +31,7 @@ public class Browse extends AppCompatActivity {
     CustomAdapter adapter = null;
     TextView tv;
     int id =0;
-    String name,path,user,age;
+    String name,path,user,age,report;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,8 +74,9 @@ public class Browse extends AppCompatActivity {
             path = data.getString(2);
             user = data.getString(3);
             age = data.getString(4);
+            report = data.getString(5);
 
-            list.add(new Items(name, path, id,user,age));
+            list.add(new Items(name, path, id,user,age,report));
             if(id != 0)
             {
                 tv.setText("");
@@ -106,6 +107,8 @@ public class Browse extends AppCompatActivity {
                 String path1 = it.getImage();
                 String user1 = it.getUser();
                 String age1 = it.getAge();
+                String report1=it.getReport();
+
 
 
                 Intent bIntent = new Intent(Browse.this, BrowseImage.class);
@@ -114,6 +117,7 @@ public class Browse extends AppCompatActivity {
                 bIntent.putExtra("path", path1);
                 bIntent.putExtra("user", user1);
                 bIntent.putExtra("age", age1);
+                bIntent.putExtra("report", report1);
                 startActivity(bIntent);}
 
 

@@ -7,14 +7,15 @@ public class Items {
     private String path;
     private String user;
     private String age;
+    private String report;
 
-
-    public Items(String name, String path, int id, String user, String age) {
+    public Items(String name, String path, int id, String user, String age, String report) {
         this.name = name;
         this.path = path;
         this.id = id;
         this.user = user;
         this.age = age;
+        this.report = report;
 
     }
     public int geId() {
@@ -27,6 +28,10 @@ public class Items {
 
     public String getAge() {
         return age;
+    }
+
+    public String getReport() {
+        return report;
     }
     public String getName() {
         return name;

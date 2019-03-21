@@ -24,6 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String COL2 = "path";
     public static final String COL3 = "user";
     public static final String COL4 = "age";
+    public static final String COL5 = "report";
 
 
     public DbHelper(Context context) {
@@ -33,7 +34,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable =  "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " NAME TEXT, PATH TEXT, USER TEXT, AGE TEXT)";
+                " NAME TEXT, PATH TEXT, USER TEXT, AGE TEXT, REPORT TEXT)";
         db.execSQL(createTable);
     }
 
@@ -43,13 +44,14 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String name, String path, String user, String age) {
+    public boolean addData(String name, String path, String user, String age, String report) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, name);
         contentValues.put(COL2,path);
         contentValues.put(COL3,user);
         contentValues.put(COL4,age);
+        contentValues.put(COL5,report);
 
         Log.d(TAG, "addData: Adding " + name +"AND"+ path + " to " + TABLE_NAME);
 
@@ -114,6 +116,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+/*
     public String addUser(String name){
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT " + COL3 + " FROM " + TABLE_NAME +
@@ -124,6 +127,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         return query;
     }
+*/
 
 }
 

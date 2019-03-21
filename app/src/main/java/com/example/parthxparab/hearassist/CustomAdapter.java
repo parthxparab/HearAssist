@@ -70,10 +70,10 @@ public class CustomAdapter extends BaseAdapter {
         Items Items = itemList.get(position);
 
             date1=Items.getName();
-            namelist= Items.getUser();
+            namelist= ""+Items.getUser();
         date2=date1.substring(0,2)+'-'+date1.substring(2,4)+'-'+date1.substring(4,8)+' '+' '+' '+date1.substring(8,10)+':'+date1.substring(10);
 
-        holder.txtName.setText(""+date2+"  -  "+namelist);
+        holder.txtName.setText(""+date2+"  |  "+namelist);
         holder.txtId.setText("Test ID : "+Items.getName());
 
         String ItemsImage = Items.getImage();

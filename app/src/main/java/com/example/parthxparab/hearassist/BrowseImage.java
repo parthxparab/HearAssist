@@ -43,7 +43,7 @@ public class BrowseImage extends AppCompatActivity {
     int BG = Color.parseColor("#101010");
     private static final @ColorInt
     int TXT = Color.parseColor("#ffffff");
-    String filename1="",datename1="",namex="",agex="";
+    String filename1="",datename1="",namex="",agex="",reportx = "";
     int  gid =0;
     com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton report, discard1, save2;
 
@@ -80,6 +80,8 @@ public class BrowseImage extends AppCompatActivity {
         namex = user;
         final String age = myBundle.getString("age");
         agex = age;
+        String report1 = myBundle.getString("report");
+         reportx = report1;
 
 
         Bitmap bitmap = BitmapFactory.decodeFile(gpath);
@@ -139,6 +141,9 @@ public class BrowseImage extends AppCompatActivity {
                 Intent in1 = new Intent(BrowseImage.this, Report1.class);
                 in1.putExtra("userrep", namex);
                 in1.putExtra("agerep", agex);
+                in1.putExtra("gid", gid);
+                in1.putExtra("rpath", reportx);
+                in1.putExtra("gname",gname);
                 startActivity(in1);
             }});
 

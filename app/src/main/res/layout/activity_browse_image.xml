@@ -25,8 +25,8 @@
             android:gravity="center"
             android:src="@mipmap/ic_launcher_background" />
 
-
     </RelativeLayout>
+
 
     <RelativeLayout
         tools:ignore="RelativeOverlap"
