@@ -8,15 +8,14 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
@@ -24,9 +23,8 @@ import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.Locale;
 
 public class Report extends AppCompatActivity {
 
@@ -41,6 +39,7 @@ public class Report extends AppCompatActivity {
     int BG = Color.parseColor("#101010");
     private static final @ColorInt
     int TXT = Color.parseColor("#ffffff");
+    TextView mR0, mR1, mR2, mR3, mR4, mL0, mL1, mL2, mL3, mL4;
 
 
 
@@ -121,15 +120,36 @@ public class Report extends AppCompatActivity {
         pd = new ProgressDialog(Report.this);
 
 
-
+        Log.d("Report.java", "" + Arrays.toString(reportData));
 
         repsave1 = findViewById(R.id.repsave);
         replayout = findViewById(R.id.replayout);
         name = findViewById(R.id.name);
         age = findViewById(R.id.age);
+        mR0 = findViewById(R.id.r0);
+        mR1 = findViewById(R.id.r1);
+        mR2 = findViewById(R.id.r2);
+        mR3 = findViewById(R.id.r3);
+        mR4 = findViewById(R.id.r4);
+        mL0 = findViewById(R.id.l0);
+        mL1 = findViewById(R.id.l1);
+        mL2 = findViewById(R.id.l2);
+        mL3 = findViewById(R.id.l3);
+        mL4 = findViewById(R.id.l4);
 
         name.setText("NAME: "+namer.toUpperCase());
         age.setText("AGE: "+ager.toUpperCase()+" YEARS");
+        mR0.setText("" + reportData[0]);
+        mR1.setText("" + reportData[1]);
+        mR2.setText("" + reportData[2]);
+        mR3.setText("" + reportData[3]);
+        mR4.setText("" + reportData[4]);
+        mL0.setText("" + reportData[5]);
+        mL1.setText("" + reportData[6]);
+        mL2.setText("" + reportData[7]);
+        mL3.setText("" + reportData[8]);
+        mL4.setText("" + reportData[9]);
+
 
         repsave1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +167,7 @@ public class Report extends AppCompatActivity {
 
                     @Override
                     public void run() {
-                        LinearLayout savingLayout = (LinearLayout) findViewById(R.id.replayout);
+                        LinearLayout savingLayout = findViewById(R.id.replayout);
                         File file = saveBitMap(Report.this, savingLayout);
                         if (file != null) {
                             pd.cancel();

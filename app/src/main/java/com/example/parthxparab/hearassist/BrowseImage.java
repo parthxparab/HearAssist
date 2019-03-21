@@ -3,7 +3,6 @@ package com.example.parthxparab.hearassist;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,16 +11,14 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
@@ -52,11 +49,11 @@ public class BrowseImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_image);
 
-        img = (ImageView) findViewById(R.id.graphimg);
-        tv1 = (TextView) findViewById(R.id.graphtitle);
-        tv2 = (TextView) findViewById(R.id.graphref);
-        tv3 = (TextView) findViewById(R.id.usertv);
-        tv4 = (TextView) findViewById(R.id.agetv);
+        img = findViewById(R.id.graphimg);
+        tv1 = findViewById(R.id.graphtitle);
+        tv2 = findViewById(R.id.graphref);
+        tv3 = findViewById(R.id.usertv);
+        tv4 = findViewById(R.id.agetv);
 
 
         dbHelper = new DbHelper(this);

@@ -110,16 +110,14 @@ public class FreqTest extends AppCompatActivity {
         setContentView(R.layout.activity_freq_test);
 
 
-
-
-        btn = (FloatingActionButton) findViewById(R.id.y);
-        btn1 = (FloatingActionButton) findViewById(R.id.g);
+        btn = findViewById(R.id.y);
+        btn1 = findViewById(R.id.g);
         handler = new Handler();
-        ImageView1 = (ImageView) findViewById(R.id.gif_wave);
-        ImageView2 = (ImageView) findViewById(R.id.no_wave);
-        Right = (ImageView) findViewById(R.id.right1);
-        Left = (ImageView) findViewById(R.id.left1);
-        tv = (TextView) findViewById(R.id.heartext);
+        ImageView1 = findViewById(R.id.gif_wave);
+        ImageView2 = findViewById(R.id.no_wave);
+        Right = findViewById(R.id.right1);
+        Left = findViewById(R.id.left1);
+        tv = findViewById(R.id.heartext);
 
         Bundle myBundle = getIntent().getExtras();
         user=myBundle.getString("et1");
@@ -424,7 +422,7 @@ public class FreqTest extends AppCompatActivity {
 
 //        super.onBackPressed();
         Intent waveIntent = new Intent(FreqTest.this, Select.class);
-        waveIntent.setFlags(waveIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        waveIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(waveIntent);
         Glide.with(context).clear(ImageView1);
 

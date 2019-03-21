@@ -2,8 +2,8 @@ package com.example.parthxparab.hearassist;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,8 +27,8 @@ int gid1 = 0;
         rpath = myBundle.getString("rpath");
         rname = myBundle.getString("gname");
 
-        img1 = (ImageView) findViewById(R.id.reportimg);
-        reptv = (TextView) findViewById(R.id.reporttitle);
+        img1 = findViewById(R.id.reportimg);
+        reptv = findViewById(R.id.reporttitle);
 
 
         dbHelper = new DbHelper(this);

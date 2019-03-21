@@ -10,10 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class CustomAdapter extends BaseAdapter {
 
@@ -58,9 +55,9 @@ public class CustomAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(layout, null);
 
-            holder.txtName = (TextView) row.findViewById(R.id.listname);
-            holder.imageView = (ImageView) row.findViewById(R.id.img);
-            holder.txtId = (TextView) row.findViewById(R.id.titlename);
+            holder.txtName = row.findViewById(R.id.listname);
+            holder.imageView = row.findViewById(R.id.img);
+            holder.txtId = row.findViewById(R.id.titlename);
             row.setTag(holder);
         }
         else {

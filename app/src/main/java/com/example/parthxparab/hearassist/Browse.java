@@ -2,19 +2,17 @@ package com.example.parthxparab.hearassist;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCursor;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -38,8 +36,8 @@ public class Browse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
 
-        mListView = (ListView) findViewById(R.id.listView);
-        tv = (TextView) findViewById(R.id.placeholder);
+        mListView = findViewById(R.id.listView);
+        tv = findViewById(R.id.placeholder);
         list = new ArrayList<>();
         adapter = new CustomAdapter(this, R.layout.list_itempxp, list);
         dbHelper = new DbHelper(this);
@@ -141,7 +139,7 @@ public class Browse extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent waveIntent = new Intent(Browse.this, Select.class);
-        waveIntent.setFlags(waveIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        waveIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(waveIntent);
         finish();
     }

@@ -201,7 +201,7 @@ public class Graph extends AppCompatActivity {
 
                     @Override
                     public void run() {
-                        RelativeLayout savingLayout = (RelativeLayout) findViewById(R.id.graph_layout);
+                        RelativeLayout savingLayout = findViewById(R.id.graph_layout);
                         File file = saveBitMap(Graph.this, savingLayout);
                         if (file != null) {
                             pd.cancel();
@@ -323,7 +323,7 @@ public class Graph extends AppCompatActivity {
 
 //        super.onBackPressed();
         Intent waveIntent = new Intent(Graph.this, Select.class);
-        waveIntent.setFlags(waveIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        waveIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(waveIntent);
         finish();
     }

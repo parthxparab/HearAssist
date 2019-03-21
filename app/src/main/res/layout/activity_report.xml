@@ -244,6 +244,17 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/r0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/cell_shape"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="20"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
                         android:id="@+id/r1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -278,17 +289,6 @@
 
                     <TextView
                         android:id="@+id/r4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/cell_shape"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="20"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/r5"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -466,6 +466,17 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/l0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/cell_shape"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="20"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
                         android:id="@+id/l1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -500,17 +511,6 @@
 
                     <TextView
                         android:id="@+id/l4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/cell_shape"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="20"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/l5"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
