@@ -11,6 +11,7 @@
         android:id="@+id/graph_layout"
         android:layout_width="wrap_content"
         android:layout_marginTop="20dp"
+
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -20,9 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:gravity="center"
             />
+
+
 
         <ImageView
             android:layout_width="wrap_content"
@@ -33,44 +37,7 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/legend" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:layout_marginTop="410dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/usertv1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginRight="15dp"
-                android:fontFamily="@font/roboto"
-                android:text="NAME"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:textColor="#101010"
-                />
-
-
-            <TextView
-                android:id="@+id/agetv1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/roboto"
-                android:textStyle="bold"
-                android:textSize="17sp"
-                android:text="AGE"
-                android:textAlignment="center"
-                android:textColor="#101010"
-                />
-
-        </LinearLayout>
 
 
     </RelativeLayout>
@@ -79,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center|top">
 
 
@@ -97,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="45dp"
+                android:layout_marginRight="35dp"
                 app:fabIcon="@drawable/check"
                 app:fabType="circle" />
 
@@ -125,7 +92,7 @@
                 android:layout_width="@dimen/fab_size_normal"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="45dp"
+                android:layout_marginRight="35dp"
                 android:fontFamily="@font/roboto"
                 android:text="REPORT"
                 android:textAlignment="center"

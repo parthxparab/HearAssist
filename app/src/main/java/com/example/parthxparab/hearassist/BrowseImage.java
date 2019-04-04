@@ -115,7 +115,7 @@ public class BrowseImage extends AppCompatActivity {
                     }
                 }, 1000);
 
-                DynamicToast.make(BrowseImage.this, "FILENAME: "+filename1+"", TXT, BG,6000).show();
+                DynamicToast.make(BrowseImage.this, "IMAGE SAVED TO DEVICE ", TXT, BG,6000).show();
 
             }});
 
@@ -208,5 +208,17 @@ public class BrowseImage extends AppCompatActivity {
             Log.i("TAG", "There was an issue scanning gallery.");
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+//        super.onBackPressed();
+        Intent waveIntent = new Intent(BrowseImage.this, Browse.class);
+        waveIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(waveIntent);
+        finish();
+    }
+
+
 }
 

@@ -163,8 +163,6 @@ public class Graph extends AppCompatActivity {
 //        apply1 = findViewById(R.id.apply1);
         discard = findViewById(R.id.discard);
         save1 = findViewById(R.id.apply1);
-        utv = (TextView) findViewById(R.id.usertv1);
-        atv = (TextView) findViewById(R.id.agetv1);
         layout = findViewById(R.id.graph_layout);
         pd = new ProgressDialog(Graph.this);
 
@@ -180,8 +178,6 @@ public class Graph extends AppCompatActivity {
         age1 = myBundle.getString("age");
         Log.d("Graph: ", "USER: " + user1 + " AGE: " + age1);
 
-        utv.setText("NAME: "+user1.toUpperCase());
-        atv.setText("AGE: "+age1.toUpperCase()+" YEARS");
 
 
         for (pxp = 0; pxp < freqData.length; pxp++) {
