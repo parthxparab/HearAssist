@@ -120,6 +120,7 @@ public class FreqTest extends AppCompatActivity {
         tv = findViewById(R.id.heartext);
 
         Bundle myBundle = getIntent().getExtras();
+        assert myBundle != null;
         user=myBundle.getString("et1");
         age=myBundle.getString("et2");
         Log.d("FreqTest: ","USER: "+ user + " AGE: " + age);
@@ -145,8 +146,10 @@ public class FreqTest extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //state = 1;
 
                 if (state == 1) {
+                    Log.d(TAG, "State: " + state);
                     btn.setVisibility(View.GONE);
                     btn1.setVisibility(View.VISIBLE);
                     ImageView1.setVisibility(View.GONE);
@@ -172,11 +175,11 @@ public class FreqTest extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "State: " + state);
-                Intent in1 = new Intent(FreqTest.this, Graph.class);
-                in1.putExtra("Array", finalDbAnswer);
-                in1.putExtra("user", user);
-                in1.putExtra("age", age);
-                startActivity(in1);
+                Intent in2 = new Intent(FreqTest.this, Graph.class);
+                in2.putExtra("Array", finalDbAnswer);
+                in2.putExtra("user", user);
+                in2.putExtra("age", age);
+                startActivity(in2);
             }
         });
 
@@ -308,7 +311,7 @@ public class FreqTest extends AppCompatActivity {
             {
                 System.exit(0);}
 
-            for (int k = 0; k < 1; k++) { //k = 2 for normal
+            for (int k = 0; k < 1; k++) { //k = 2 for both ear testing
 
 
                 EarImage(k);

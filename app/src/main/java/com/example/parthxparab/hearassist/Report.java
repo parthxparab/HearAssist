@@ -8,40 +8,56 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Iterator;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class Report extends AppCompatActivity {
 
 
-    int [] reportData;
-    String ager,namer,reportpath,filename,datename,filename1;
-    com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton repsave1;
-    LinearLayout replayout;
-    TextView name,age;
-    DbHelper dbHelper;
-    ProgressDialog pd;
+    private static final String TAG = "Report.java";
     private static final @ColorInt
     int BG = Color.parseColor("#101010");
     private static final @ColorInt
     int TXT = Color.parseColor("#ffffff");
+    int[] reportData;
+    String ager, namer, reportpath, filename, datename, filename1;
+    com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton repsave1;
+    LinearLayout replayout;
+    TextView name, age;
+    DbHelper dbHelper;
+    ProgressDialog pd;
     TextView mR0, mR1, mR2, mR3, mR4, mL0, mL1, mL2, mL3, mL4;
-
 
 
     private File saveBitMap(Context context, View drawView) {
@@ -52,7 +68,7 @@ public class Report extends AppCompatActivity {
                 Log.i("TAG", "Can't create directory to save the image");
             return null;
         }
-        filename = ""+reportpath;
+        filename = "" + reportpath;
 //        filename1 = filename;
 
         File pictureFile = new File(filename);
@@ -116,8 +132,6 @@ public class Report extends AppCompatActivity {
     }
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,23 +166,33 @@ public class Report extends AppCompatActivity {
         mL3 = findViewById(R.id.l3);
         mL4 = findViewById(R.id.l4);
 
-        name.setText("NAME: "+namer.toUpperCase());
-        age.setText("AGE: "+ager.toUpperCase()+" YEARS");
+        name.setText("NAME: " + namer.toUpperCase());
+        age.setText("AGE: " + ager.toUpperCase() + " YEARS");
         mR0.setText("" + reportData[0]);
         mR1.setText("" + reportData[1]);
         mR2.setText("" + reportData[2]);
         mR3.setText("" + reportData[3]);
         mR4.setText("" + reportData[4]);
-        mL0.setText("" + reportData[5]);
-        mL1.setText("" + reportData[6]);
-        mL2.setText("" + reportData[7]);
-        mL3.setText("" + reportData[8]);
-        mL4.setText("" + reportData[9]);
+        mL0.setText("" + reportData[6]);
+        mL1.setText("" + reportData[7]);
+        mL2.setText("" + reportData[8]);
+        mL3.setText("" + reportData[9]);
+        mL4.setText("" + reportData[10]);
 
 
         repsave1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                /**
+                 * Checking Internet Connection
+                 */
+                if (InternetConnection.checkConnection(getApplicationContext())) {
+                    //new GetDataTask().execute();
+                    new SendRequest().execute();
+                } else {
+                    Snackbar.make(view, "Internet Connection Not Available", Snackbar.LENGTH_LONG).show();
+                }
 
                 pd.setMessage("saving your image");
                 pd.show();
@@ -185,7 +209,7 @@ public class Report extends AppCompatActivity {
                         LinearLayout savingLayout = findViewById(R.id.replayout);
                         File file = saveBitMap(Report.this, savingLayout);
                         if (file != null) {
-                            AddData(datename, filename1, namer,ager, filename);
+                            AddData(datename, filename1, namer, ager, filename);
                             pd.cancel();
                             Log.i("TAG", "Image saved to the gallery!");
 
@@ -204,4 +228,132 @@ public class Report extends AppCompatActivity {
 
 
     }
+
+    public String getPostDataString(JSONObject params) throws Exception {
+
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        Iterator<String> itr = params.keys();
+
+        while (itr.hasNext()) {
+
+            String key = itr.next();
+            Object value = params.get(key);
+
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(key, "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+        }
+        Log.d(TAG, result.toString());
+        return result.toString();
+    }
+
+    public class SendRequest extends AsyncTask<String, Void, String> {
+
+
+        protected void onPreExecute() {
+        }
+
+        protected String doInBackground(String... arg0) {
+
+            try {
+
+                //Trending POSTMAN URL
+                //https://script.google.com/macros/s/AKfycbx8wJXOBGJgyLy8FZtDIeF3AiRYa2EGFVgzRQzsXAjWNRQYy75m/exec?id=1yVXIeAuSEg6f61uPVyOPIQsR-SharMIWajF_rI787hE&sheet=Sheet1&age=3&R250Hz=30&R500Hz=30&R1000Hz=30&R2000Hz=20&R4000Hz=20&L250Hz=30&L500Hz=30&L1000Hz=20&L2000Hz=30&L4000Hz=20
+
+                URL url = new URL("https://script.google.com/macros/s/AKfycbx8wJXOBGJgyLy8FZtDIeF3AiRYa2EGFVgzRQzsXAjWNRQYy75m/exec");
+
+                JSONObject postDataParams = new JSONObject();
+
+                String id = "1yVXIeAuSEg6f61uPVyOPIQsR-SharMIWajF_rI787hE";
+                String sheet = "Sheet1";
+                int ageCategory = 0;
+
+                if (Integer.valueOf(ager) <= 20)
+                    ageCategory = 1;
+                else if (Integer.valueOf(ager) > 20 && Integer.valueOf(ager) <= 40)
+                    ageCategory = 2;
+                else if (Integer.valueOf(ager) > 40 && Integer.valueOf(ager) <= 60)
+                    ageCategory = 3;
+                else
+                    ageCategory = 4;
+
+
+                postDataParams.put("age", ageCategory);
+
+                postDataParams.put("R250Hz", reportData[0]);
+                postDataParams.put("R500Hz", reportData[1]);
+                postDataParams.put("R1000Hz", reportData[2]);
+                postDataParams.put("R2000Hz", reportData[3]);
+                postDataParams.put("R4000Hz", reportData[4]);
+
+                postDataParams.put("L250Hz", reportData[6]);
+                postDataParams.put("L500Hz", reportData[7]);
+                postDataParams.put("L1000Hz", reportData[8]);
+                postDataParams.put("L2000Hz", reportData[9]);
+                postDataParams.put("L4000Hz", reportData[10]);
+
+                postDataParams.put("id", id);
+                postDataParams.put("sheet", sheet);
+
+
+                Log.e("params", postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, StandardCharsets.UTF_8));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuffer sb = new StringBuffer();
+                    String line = "";
+
+                    while ((line = in.readLine()) != null) {
+
+                        sb.append(line);
+                        break;
+                    }
+
+                    in.close();
+                    return sb.toString();
+
+                } else {
+                    return new String("false : " + responseCode);
+                }
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getApplicationContext(), result,
+                    Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+
 }

@@ -1,9 +1,8 @@
 package com.example.parthxparab.hearassist;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +37,7 @@ public class Name extends AppCompatActivity {
                 in1.putExtra("et1", user);
                 in1.putExtra("et2",age);
                 startActivity(in1);
+                //finish();
 
             }
         });

@@ -5,6 +5,9 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,15 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Report1"></activity>
-        <activity android:name=".Report" />
-        <activity android:name=".Name" />
-        <activity android:name=".Splash" />
-        <activity android:name=".BrowseImage" />
-        <activity
-            android:name=".Browse"
-            android:label="Browse Test"
-            android:theme="@style/ToolTheme" />
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme">
@@ -36,6 +31,15 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <activity android:name=".Report1" />
+        <activity android:name=".Report" />
+        <activity android:name=".Name" />
+        <activity android:name=".Splash" />
+        <activity android:name=".BrowseImage" />
+        <activity
+            android:name=".Browse"
+            android:label="Browse Test"
+            android:theme="@style/ToolTheme" />
         <activity
             android:name=".Select"
             android:label="Choose" />

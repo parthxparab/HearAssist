@@ -171,6 +171,7 @@ public class Graph extends AppCompatActivity {
                         Typeface.DEFAULT_BOLD, Typeface.NORMAL)).apply();
 
         Bundle myBundle = getIntent().getExtras();
+        assert myBundle != null;
         freqData = myBundle.getIntArray("Array");
 
         freqData1 = freqData;
