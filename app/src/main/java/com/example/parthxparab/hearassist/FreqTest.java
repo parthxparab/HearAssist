@@ -311,13 +311,13 @@ public class FreqTest extends AppCompatActivity {
             {
                 System.exit(0);}
 
-            for (int k = 0; k < 1; k++) { //k = 2 for both ear testing
+            for (int k = 0; k < 2; k++) { //k = 2 for both ear testing
 
 
                 EarImage(k);
                 ear = k;
                 //Log.d("MainActivity: ", "ear: " + ear);
-                for (int i = 0; i < 1; i++) {//testingFrequencies.length
+                for (int i = 0; i < testingFrequencies.length; i++) {//testingFrequencies.length
 
                     Log.d("MainActivity: ", "frequency: " + frequency);
 
