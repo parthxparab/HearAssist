@@ -1,2 +1,2 @@
 # HearAssist
-Final Year Project For Audiogram Generation and Implementation
+Undergrad Final Year Project at The University of Mumbai For Audiogram Generation and Implementation
